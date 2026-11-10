@@ -2,14 +2,16 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>مدخل الفيلا — مقارنة التصاميم</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#14110e;--card:#1f1a15;--line:#3a3028;--gold:#d6b67a;--txt:#f3ece2;--mut:#a89a88}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--txt);font-family:Tajawal,system-ui,sans-serif;padding-bottom:90px}
-header{padding:20px 16px 8px;text-align:center}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+button,select,a{touch-action:manipulation}
+body{background:var(--bg);color:var(--txt);font-family:Tajawal,system-ui,sans-serif;padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+header{padding:calc(20px + env(safe-area-inset-top)) 16px 8px;text-align:center}
 header small{color:var(--gold);letter-spacing:3px;font-size:11px}
 header h1{font-size:22px;font-weight:700;margin-top:4px}
 header p{color:var(--mut);font-size:13px;margin-top:6px;line-height:1.6}
@@ -37,10 +39,10 @@ section{display:none;padding:14px 12px}section.on{display:block}
 .dots{display:flex;justify-content:center;gap:6px;margin-top:10px}
 .dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--gold);width:18px;border-radius:4px}
 .sel{display:flex;gap:8px;margin-bottom:10px}
-.sel select{flex:1;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}
+.sel select{flex:1;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:16px;-webkit-appearance:none;appearance:none}
 .cmp{position:relative;aspect-ratio:1200/940;border-radius:14px;overflow:hidden;touch-action:none;background:#000}
 .cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none}
-.cmp .top{clip-path:inset(0 0 0 50%)}
+.cmp .top{-webkit-clip-path:inset(0 0 0 50%);clip-path:inset(0 0 0 50%)}
 .cmp .bar{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--gold);transform:translateX(-1px)}
 .cmp .bar:after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:var(--gold);color:#1a140d;display:grid;place-items:center;font-size:18px}
 .cmp .la,.cmp .lb{position:absolute;top:8px;background:#000b;font-size:12px;padding:4px 9px;border-radius:999px}
@@ -53,14 +55,15 @@ section{display:none;padding:14px 12px}section.on{display:block}
 .grid figure{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .grid img{width:100%;aspect-ratio:440/950;object-fit:cover;display:block}
 .grid figcaption{padding:8px;font-size:13px;text-align:center}
-.foot{position:fixed;bottom:0;left:0;right:0;background:#14110ef2;border-top:1px solid var(--line);padding:12px;display:flex;gap:10px;align-items:center;backdrop-filter:blur(8px)}
+.foot{position:fixed;bottom:0;left:0;right:0;background:#14110ef2;border-top:1px solid var(--line);padding:12px 12px calc(12px + env(safe-area-inset-bottom));display:flex;gap:10px;align-items:center;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .foot div{flex:1;font-size:13px;color:var(--mut)}.foot div b{color:var(--txt);display:block;font-size:15px}
 .foot a{background:#25d366;color:#06240f;text-decoration:none;font-weight:700;padding:12px 16px;border-radius:12px;font-size:14px}
 .foot a.off{opacity:.35;pointer-events:none}
-.lb{position:fixed;inset:0;background:#000;z-index:20;display:none;overflow:auto}
+.lb{position:fixed;inset:0;background:#000;z-index:20;display:none;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .lb.on{display:block}.lb img{width:200%;max-width:none;display:block}
-.lb button{position:fixed;top:12px;left:12px;z-index:21;background:#000b;color:#fff;border:1px solid #555;border-radius:999px;width:40px;height:40px;font-size:20px}
+.lb button{position:fixed;top:calc(12px + env(safe-area-inset-top));left:12px;z-index:21;background:#000b;color:#fff;border:1px solid #555;border-radius:999px;width:40px;height:40px;font-size:20px}
 .lbh{position:fixed;bottom:14px;left:0;right:0;text-align:center;color:#ccc;font-size:12px}
+@supports not (aspect-ratio:1){.ph,.cmp{height:0;padding-top:78.3%}.grid img{height:auto}}
 </style>
 </head>
 <body>
@@ -120,8 +123,8 @@ function cmp(){[sa,sb].forEach(s=>{s.options[3].disabled=V==="d";if(V==="d"&&s.v
 document.querySelector(".cmp").style.aspectRatio=V==="m"?"1200/940":"440/950";document.querySelector(".cmp").style.maxWidth=V==="m"?"":"320px";document.querySelector(".cmp").style.margin=V==="m"?"":"0 auto"}
 sa.onchange=sb.onchange=cmp;cmp();
 document.querySelectorAll(".vw button").forEach(b=>b.onclick=()=>{V=b.dataset.v;document.querySelectorAll(".vw button").forEach(x=>x.classList.toggle("on",x===b));cmp()});
-const C=$("#cmp");function mv(e){const r=C.getBoundingClientRect(),x=Math.min(Math.max((e.clientX-r.left)/r.width,0),1)*100;$("#ib").style.clipPath=`inset(0 0 0 ${x}%)`;$("#bar").style.left=x+"%"}
-C.onpointerdown=e=>{C.setPointerCapture(e.pointerId);mv(e)};C.onpointermove=e=>{if(e.buttons||e.pointerType==="touch")mv(e)};
+const C=$("#cmp");function mv(e){const r=C.getBoundingClientRect(),x=Math.min(Math.max((e.clientX-r.left)/r.width,0),1)*100;$("#ib").style.clipPath=$("#ib").style.webkitClipPath=`inset(0 0 0 ${x}%)`;$("#bar").style.left=x+"%"}
+let dn=0;C.addEventListener("pointerdown",e=>{dn=1;try{C.setPointerCapture(e.pointerId)}catch(_){}mv(e)});C.addEventListener("pointermove",e=>{if(dn)mv(e)});["pointerup","pointercancel"].forEach(t=>C.addEventListener(t,()=>dn=0));C.addEventListener("touchmove",e=>{e.preventDefault();mv(e.touches[0])},{passive:false});C.addEventListener("touchstart",e=>mv(e.touches[0]),{passive:true});
 function zoom(s){$("#lbi").src=s;$("#lbi").style.width=s.startsWith("d")?"100%":"200%";$("#lbx").classList.add("on")}
 $("#lbc").onclick=()=>$("#lbx").classList.remove("on");
 $("#grid").onclick=e=>{if(e.target.dataset.z)zoom(e.target.dataset.z)};
