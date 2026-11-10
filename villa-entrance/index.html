@@ -30,7 +30,7 @@ section{display:none;padding:14px 12px}section.on{display:block}
 .ph .sw b.on{background:var(--gold);color:#1a140d}
 .ph .no{position:absolute;top:10px;right:10px;background:#000a;color:var(--gold);font-size:13px;padding:4px 10px;border-radius:999px}
 .bd{padding:14px}
-.bd h2{font-size:18px}.bd .en{color:var(--mut);font-size:12px;direction:ltr;text-align:right}
+.bd h2{font-size:18px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
 .chips span{font-size:12px;border:1px solid var(--line);padding:4px 9px;border-radius:999px;color:#d9cfc2}
 .bd p{font-size:13.5px;line-height:1.7;color:#d9cfc2}
@@ -69,7 +69,7 @@ section{display:none;padding:14px 12px}section.on{display:block}
 <body>
 <header>
 <small>ARCHTVERSE</small>
-<h1>مدخل الفيلا — ٤ تصاميم مقترحة</h1>
+<h1>مدخل الفيلا — ٣ تصاميم مقترحة</h1>
 <p>جميع التصاميم من نفس الزاوية؛ الفرق فقط في إطار الأبواب الجانبية والإضاءة.</p>
 </header>
 <nav>
@@ -94,17 +94,16 @@ section{display:none;padding:14px 12px}section.on{display:block}
 
 <script>
 const O=[
-{ar:"كلاسيك هادئ",en:"Classic · Soft",c:["أعمدة مخددة وتاج كلاسيكي","إضاءة هادئة","تنفيذ بسيط"],p:"إطار كلاسيكي بأعمدة مخددة حول الأبواب الجانبية، مع إضاءة خطية ناعمة حول الألواح. أجواء دافئة وهادئة."},
-{ar:"كلاسيك بإضاءة سفلية",en:"Classic · Uplight",c:["أعمدة مخددة وتاج كلاسيكي","إضاءة متوسطة","إضاءة أسفل الأعمدة"],p:"نفس الإطار الكلاسيكي مع إضاءة موجّهة للأعلى عند قاعدة الأعمدة، تُبرز ارتفاعها وتفاصيلها."},
-{ar:"كلاسيك مشرق",en:"Classic · Radiant",c:["أعمدة مخددة وتاج كلاسيكي","إضاءة قوية","إضاءة داخل التخديد"],p:"إضاءة خطية داخل تخديدات الأعمدة وحولها؛ الواجهة الأكثر توهجاً وفخامة في الليل. تنفيذ وصيانة أدق."},
-{ar:"مودرن بسيط",en:"Modern · Minimal",c:["إطار بسيط بدون تاج","إضاءة محيطية","طابع عصري"],p:"الأبواب الجانبية بدون أعمدة وتاج، مع خطوط إضاءة محيطية نظيفة. طابع أكثر حداثة وبساطة."}];
+{ar:"كلاسيك هادئ",c:["أعمدة مخددة وتاج كلاسيكي","إضاءة هادئة","تنفيذ أبسط"],p:"إطار كلاسيكي بأعمدة مخددة حول الأبواب الجانبية، مع إضاءة خطية ناعمة حول الألواح. أجواء دافئة وهادئة."},
+{ar:"كلاسيك مشرق",c:["أعمدة مخددة وتاج كلاسيكي","إضاءة أقوى","إبراز الأعمدة بالإضاءة"],p:"نفس الإطار الكلاسيكي مع إضاءة أقوى على الأعمدة والواجهة؛ أجواء أكثر توهجاً وفخامة في الليل."},
+{ar:"مودرن بسيط",c:["إطار بسيط بدون تاج","إضاءة محيطية","طابع عصري"],p:"الأبواب الجانبية بدون أعمدة وتاج، مع خطوط إضاءة محيطية نظيفة. طابع أكثر حداثة وبساطة."}];
 const $=s=>document.querySelector(s);let pick=-1;
 try{pick=+localStorage.getItem("pick");if(isNaN(pick))pick=-1;if(localStorage.getItem("pick")===null)pick=-1}catch(e){}
 const rail=$("#rail"),dots=$("#dots");
 O.forEach((o,i)=>{const n=i+1;
-rail.insertAdjacentHTML("beforeend",`<div class="card" id="k${i}"><div class="ph"><img src="m${n}.jpg" alt="${o.ar}" data-i="${i}"><span class="no">التصميم ${n}</span>${n<4?'<div class="sw"><b class="on" data-s="m">الواجهة</b><b data-s="d">تفصيل الباب</b></div>':''}</div><div class="bd"><h2>${o.ar}</h2><div class="en">${o.en}</div><div class="chips">${o.c.map(x=>`<span>${x}</span>`).join("")}</div><p>${o.p}</p><button class="pk" data-i="${i}">اختيار هذا التصميم</button></div></div>`);
+rail.insertAdjacentHTML("beforeend",`<div class="card" id="k${i}"><div class="ph"><img src="m${n}.jpg" alt="${o.ar}" data-i="${i}"><span class="no">التصميم ${n}</span>${n<3?'<div class="sw"><b class="on" data-s="m">الواجهة</b><b data-s="d">تفصيل الباب</b></div>':''}</div><div class="bd"><h2>${o.ar}</h2><div class="chips">${o.c.map(x=>`<span>${x}</span>`).join("")}</div><p>${o.p}</p><button class="pk" data-i="${i}">اختيار هذا التصميم</button></div></div>`);
 dots.insertAdjacentHTML("beforeend","<i></i>");
-if(n<4)$("#grid").insertAdjacentHTML("beforeend",`<figure><img src="d${n}.jpg" data-z="d${n}.jpg"><figcaption>${n} · ${o.ar}</figcaption></figure>`);
+if(n<3)$("#grid").insertAdjacentHTML("beforeend",`<figure><img src="d${n}.jpg" data-z="d${n}.jpg"><figcaption>${n} · ${o.ar}</figcaption></figure>`);
 ["#sa","#sb"].forEach(s=>$(s).insertAdjacentHTML("beforeend",`<option value="${n}">${n} · ${o.ar}</option>`));});
 document.querySelectorAll(".card").forEach((k,i)=>{const im=k.querySelector("img");
 k.querySelectorAll(".sw b").forEach(b=>b.onclick=e=>{e.stopPropagation();k.querySelectorAll(".sw b").forEach(x=>x.classList.toggle("on",x===b));im.src=(b.dataset.s==="m"?"m":"d")+(i+1)+".jpg";im.style.objectFit=b.dataset.s==="m"?"cover":"contain"});
@@ -118,8 +117,8 @@ if(i<0)return;$("#ch").textContent=`التصميم ${i+1} — ${O[i].ar}`;const 
 w.href="https://wa.me/9647773944470?text="+encodeURIComponent(`مرحباً، اخترت لمدخل الفيلا: التصميم ${i+1} (${O[i].ar})`);}
 setPick(pick);
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x===b));document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id===b.dataset.t))});
-let V="m";const sa=$("#sa"),sb=$("#sb");sa.value="1";sb.value="4";
-function cmp(){[sa,sb].forEach(s=>{s.options[3].disabled=V==="d";if(V==="d"&&s.value==="4")s.value=s===sa?"1":"3"});$("#ia").src=V+sa.value+".jpg";$("#ib").src=V+sb.value+".jpg";$("#la").textContent=sa.value;$("#lbB").textContent=sb.value;
+let V="m";const sa=$("#sa"),sb=$("#sb");sa.value="1";sb.value="3";
+function cmp(){[sa,sb].forEach(s=>{s.options[2].disabled=V==="d";if(V==="d"&&s.value==="4")s.value=s===sa?"1":"2"});$("#ia").src=V+sa.value+".jpg";$("#ib").src=V+sb.value+".jpg";$("#la").textContent=sa.value;$("#lbB").textContent=sb.value;
 document.querySelector(".cmp").style.aspectRatio=V==="m"?"1200/940":"440/950";document.querySelector(".cmp").style.maxWidth=V==="m"?"":"320px";document.querySelector(".cmp").style.margin=V==="m"?"":"0 auto"}
 sa.onchange=sb.onchange=cmp;cmp();
 document.querySelectorAll(".vw button").forEach(b=>b.onclick=()=>{V=b.dataset.v;document.querySelectorAll(".vw button").forEach(x=>x.classList.toggle("on",x===b));cmp()});
