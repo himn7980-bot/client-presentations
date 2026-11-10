@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدخل الفيلا — مقارنة التصاميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#14110e;--card:#1f1a15;--line:#3a3028;--gold:#d6b67a;--txt:#f3ece2;--mut:#a89a88}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:Tajawal,system-ui,sans-serif;padding-bottom:90px}
+header{padding:20px 16px 8px;text-align:center}
+header small{color:var(--gold);letter-spacing:3px;font-size:11px}
+header h1{font-size:22px;font-weight:700;margin-top:4px}
+header p{color:var(--mut);font-size:13px;margin-top:6px;line-height:1.6}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line)}
+nav button{flex:1;background:none;border:1px solid var(--line);color:var(--mut);padding:10px 4px;border-radius:999px;font:inherit;font-size:14px}
+nav button.on{background:var(--gold);color:#1a140d;border-color:var(--gold);font-weight:700}
+section{display:none;padding:14px 12px}section.on{display:block}
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.card{flex:0 0 92%;scroll-snap-align:center;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.card.pick{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+.ph{position:relative;aspect-ratio:1200/940;background:#000}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .sw{position:absolute;bottom:10px;left:10px;display:flex;background:#000a;border-radius:999px;padding:3px}
+.ph .sw b{font-weight:500;font-size:12px;padding:5px 10px;border-radius:999px;color:#ddd}
+.ph .sw b.on{background:var(--gold);color:#1a140d}
+.ph .no{position:absolute;top:10px;right:10px;background:#000a;color:var(--gold);font-size:13px;padding:4px 10px;border-radius:999px}
+.bd{padding:14px}
+.bd h2{font-size:18px}.bd .en{color:var(--mut);font-size:12px;direction:ltr;text-align:right}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chips span{font-size:12px;border:1px solid var(--line);padding:4px 9px;border-radius:999px;color:#d9cfc2}
+.bd p{font-size:13.5px;line-height:1.7;color:#d9cfc2}
+.pk{width:100%;margin-top:12px;padding:12px;border-radius:12px;border:1px solid var(--gold);background:none;color:var(--gold);font:inherit;font-size:15px;font-weight:700}
+.card.pick .pk{background:var(--gold);color:#1a140d}
+.dots{display:flex;justify-content:center;gap:6px;margin-top:10px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--gold);width:18px;border-radius:4px}
+.sel{display:flex;gap:8px;margin-bottom:10px}
+.sel select{flex:1;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}
+.cmp{position:relative;aspect-ratio:1200/940;border-radius:14px;overflow:hidden;touch-action:none;background:#000}
+.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none}
+.cmp .top{clip-path:inset(0 0 0 50%)}
+.cmp .bar{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--gold);transform:translateX(-1px)}
+.cmp .bar:after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:var(--gold);color:#1a140d;display:grid;place-items:center;font-size:18px}
+.cmp .la,.cmp .lb{position:absolute;top:8px;background:#000b;font-size:12px;padding:4px 9px;border-radius:999px}
+.cmp .la{left:8px}.cmp .lb{right:8px}
+.hint{color:var(--mut);font-size:12.5px;text-align:center;margin-top:8px}
+.vw{display:flex;justify-content:center;gap:6px;margin-top:10px}
+.vw button{background:none;border:1px solid var(--line);color:var(--mut);padding:7px 14px;border-radius:999px;font:inherit;font-size:13px}
+.vw button.on{border-color:var(--gold);color:var(--gold)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid figure{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.grid img{width:100%;aspect-ratio:440/950;object-fit:cover;display:block}
+.grid figcaption{padding:8px;font-size:13px;text-align:center}
+.foot{position:fixed;bottom:0;left:0;right:0;background:#14110ef2;border-top:1px solid var(--line);padding:12px;display:flex;gap:10px;align-items:center;backdrop-filter:blur(8px)}
+.foot div{flex:1;font-size:13px;color:var(--mut)}.foot div b{color:var(--txt);display:block;font-size:15px}
+.foot a{background:#25d366;color:#06240f;text-decoration:none;font-weight:700;padding:12px 16px;border-radius:12px;font-size:14px}
+.foot a.off{opacity:.35;pointer-events:none}
+.lb{position:fixed;inset:0;background:#000;z-index:20;display:none;overflow:auto}
+.lb.on{display:block}.lb img{width:200%;max-width:none;display:block}
+.lb button{position:fixed;top:12px;left:12px;z-index:21;background:#000b;color:#fff;border:1px solid #555;border-radius:999px;width:40px;height:40px;font-size:20px}
+.lbh{position:fixed;bottom:14px;left:0;right:0;text-align:center;color:#ccc;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<small>ARCHTVERSE</small>
+<h1>مدخل الفيلا — ٤ تصاميم مقترحة</h1>
+<p>جميع التصاميم من نفس الزاوية؛ الفرق فقط في إطار الأبواب الجانبية والإضاءة.</p>
+</header>
+<nav>
+<button class="on" data-t="g">التصاميم</button>
+<button data-t="c">مقارنة</button>
+<button data-t="d">التفاصيل</button>
+</nav>
+
+<section id="g" class="on"><div class="rail" id="rail"></div><div class="dots" id="dots"></div></section>
+
+<section id="c">
+<div class="sel"><select id="sa"></select><select id="sb"></select></div>
+<div class="cmp" id="cmp"><img id="ia"><img id="ib" class="top"><div class="bar" id="bar"></div><span class="la" id="la"></span><span class="lb" id="lbB"></span></div>
+<p class="hint">اسحب الخط لليمين واليسار للمقارنة</p>
+<div class="vw"><button class="on" data-v="m">الواجهة</button><button data-v="d">تفصيل الباب</button></div>
+</section>
+
+<section id="d"><div class="grid" id="grid"></div><p class="hint">اضغط على أي صورة لتكبيرها</p></section>
+
+<div class="foot"><div>اختيارك<b id="ch">لم يتم الاختيار بعد</b></div><a id="wa" class="off" href="#">إرسال عبر واتساب</a></div>
+<div class="lb" id="lbx"><button id="lbc">×</button><img id="lbi"><div class="lbh">حرّك الصورة بإصبعك لرؤية كل الأجزاء</div></div>
+
+<script>
+const O=[
+{ar:"كلاسيك هادئ",en:"Classic · Soft",c:["أعمدة مخددة وتاج كلاسيكي","إضاءة هادئة","تنفيذ بسيط"],p:"إطار كلاسيكي بأعمدة مخددة حول الأبواب الجانبية، مع إضاءة خطية ناعمة حول الألواح. أجواء دافئة وهادئة."},
+{ar:"كلاسيك بإضاءة سفلية",en:"Classic · Uplight",c:["أعمدة مخددة وتاج كلاسيكي","إضاءة متوسطة","إضاءة أسفل الأعمدة"],p:"نفس الإطار الكلاسيكي مع إضاءة موجّهة للأعلى عند قاعدة الأعمدة، تُبرز ارتفاعها وتفاصيلها."},
+{ar:"كلاسيك مشرق",en:"Classic · Radiant",c:["أعمدة مخددة وتاج كلاسيكي","إضاءة قوية","إضاءة داخل التخديد"],p:"إضاءة خطية داخل تخديدات الأعمدة وحولها؛ الواجهة الأكثر توهجاً وفخامة في الليل. تنفيذ وصيانة أدق."},
+{ar:"مودرن بسيط",en:"Modern · Minimal",c:["إطار بسيط بدون تاج","إضاءة محيطية","طابع عصري"],p:"الأبواب الجانبية بدون أعمدة وتاج، مع خطوط إضاءة محيطية نظيفة. طابع أكثر حداثة وبساطة."}];
+const $=s=>document.querySelector(s);let pick=-1;
+try{pick=+localStorage.getItem("pick");if(isNaN(pick))pick=-1;if(localStorage.getItem("pick")===null)pick=-1}catch(e){}
+const rail=$("#rail"),dots=$("#dots");
+O.forEach((o,i)=>{const n=i+1;
+rail.insertAdjacentHTML("beforeend",`<div class="card" id="k${i}"><div class="ph"><img src="m${n}.jpg" alt="${o.ar}" data-i="${i}"><span class="no">التصميم ${n}</span>${n<4?'<div class="sw"><b class="on" data-s="m">الواجهة</b><b data-s="d">تفصيل الباب</b></div>':''}</div><div class="bd"><h2>${o.ar}</h2><div class="en">${o.en}</div><div class="chips">${o.c.map(x=>`<span>${x}</span>`).join("")}</div><p>${o.p}</p><button class="pk" data-i="${i}">اختيار هذا التصميم</button></div></div>`);
+dots.insertAdjacentHTML("beforeend","<i></i>");
+if(n<4)$("#grid").insertAdjacentHTML("beforeend",`<figure><img src="d${n}.jpg" data-z="d${n}.jpg"><figcaption>${n} · ${o.ar}</figcaption></figure>`);
+["#sa","#sb"].forEach(s=>$(s).insertAdjacentHTML("beforeend",`<option value="${n}">${n} · ${o.ar}</option>`));});
+document.querySelectorAll(".card").forEach((k,i)=>{const im=k.querySelector("img");
+k.querySelectorAll(".sw b").forEach(b=>b.onclick=e=>{e.stopPropagation();k.querySelectorAll(".sw b").forEach(x=>x.classList.toggle("on",x===b));im.src=(b.dataset.s==="m"?"m":"d")+(i+1)+".jpg";im.style.objectFit=b.dataset.s==="m"?"cover":"contain"});
+im.onclick=()=>zoom(im.getAttribute("src"));
+k.querySelector(".pk").onclick=()=>setPick(i);});
+function upDots(){const w=rail.firstElementChild.offsetWidth+12,i=Math.round(Math.abs(rail.scrollLeft)/w);dots.querySelectorAll("i").forEach((d,j)=>d.classList.toggle("on",j===i))}
+rail.onscroll=upDots;upDots();
+function setPick(i){pick=i;try{localStorage.setItem("pick",i)}catch(e){}
+document.querySelectorAll(".card").forEach((k,j)=>{k.classList.toggle("pick",j===i);k.querySelector(".pk").textContent=j===i?"✓ تم الاختيار":"اختيار هذا التصميم"});
+if(i<0)return;$("#ch").textContent=`التصميم ${i+1} — ${O[i].ar}`;const w=$("#wa");w.classList.remove("off");
+w.href="https://wa.me/9647773944470?text="+encodeURIComponent(`مرحباً، اخترت لمدخل الفيلا: التصميم ${i+1} (${O[i].ar})`);}
+setPick(pick);
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x===b));document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id===b.dataset.t))});
+let V="m";const sa=$("#sa"),sb=$("#sb");sa.value="1";sb.value="4";
+function cmp(){[sa,sb].forEach(s=>{s.options[3].disabled=V==="d";if(V==="d"&&s.value==="4")s.value=s===sa?"1":"3"});$("#ia").src=V+sa.value+".jpg";$("#ib").src=V+sb.value+".jpg";$("#la").textContent=sa.value;$("#lbB").textContent=sb.value;
+document.querySelector(".cmp").style.aspectRatio=V==="m"?"1200/940":"440/950";document.querySelector(".cmp").style.maxWidth=V==="m"?"":"320px";document.querySelector(".cmp").style.margin=V==="m"?"":"0 auto"}
+sa.onchange=sb.onchange=cmp;cmp();
+document.querySelectorAll(".vw button").forEach(b=>b.onclick=()=>{V=b.dataset.v;document.querySelectorAll(".vw button").forEach(x=>x.classList.toggle("on",x===b));cmp()});
+const C=$("#cmp");function mv(e){const r=C.getBoundingClientRect(),x=Math.min(Math.max((e.clientX-r.left)/r.width,0),1)*100;$("#ib").style.clipPath=`inset(0 0 0 ${x}%)`;$("#bar").style.left=x+"%"}
+C.onpointerdown=e=>{C.setPointerCapture(e.pointerId);mv(e)};C.onpointermove=e=>{if(e.buttons||e.pointerType==="touch")mv(e)};
+function zoom(s){$("#lbi").src=s;$("#lbi").style.width=s.startsWith("d")?"100%":"200%";$("#lbx").classList.add("on")}
+$("#lbc").onclick=()=>$("#lbx").classList.remove("on");
+$("#grid").onclick=e=>{if(e.target.dataset.z)zoom(e.target.dataset.z)};
+</script>
+</body>
+</html>
