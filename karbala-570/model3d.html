@@ -101,6 +101,7 @@ new GLTFLoader().load('model/house.glb',g=>{
   root.traverse(o=>{ if(!o.isMesh) return;
     const name=(o.name||o.parent?.name||''); const grp=name.split('_')[0]; const kind=kindOf(name);
     (groups[grp]=groups[grp]||[]).push(o);
+    if(!o.geometry.attributes.normal) o.geometry.computeVertexNormals();
     const orig=o.material; const isGlass=kind==='glass', isLed=kind==='led';
     const real=orig.clone();
     if(isGlass){ real.transmission=0; real.transparent=true; real.opacity=.28; real.color=new THREE.Color(0x9fc3cc); real.roughness=.05; real.metalness=0; real.depthWrite=false; }
