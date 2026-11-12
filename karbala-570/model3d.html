@@ -92,7 +92,7 @@ const ground=new THREE.Mesh(new THREE.PlaneGeometry(60,60),new THREE.MeshStandar
 ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
 
 const groups={}; const meshes=[]; const edgeLines=[]; let box, size, center;
-const CLAY={gatemetal:0x1a1a1a,wall:0xf0ede8,slab:0xe6e2db,floor:0xe9e5de,marble:0xf3e9d6,walnut:0x8d7a68,oak:0xb3a089,arch:0x8d7a68,wood:0xb39a7e,rail:0x4a443c,cnc:0x5c5046,led:0xffd38a,glass:0xbcd6dc};
+const CLAY={winframe:0x4a3f35,gatemetal:0x1a1a1a,wall:0xf0ede8,slab:0xe6e2db,floor:0xe9e5de,marble:0xf3e9d6,walnut:0x8d7a68,oak:0xb3a089,arch:0x8d7a68,wood:0xb39a7e,rail:0x4a443c,cnc:0x5c5046,led:0xffd38a,glass:0xbcd6dc};
 const kindOf=n=>n.split('_').slice(1).join('_');
 const edgeMat=new THREE.LineBasicMaterial({color:0x1f1b17,transparent:true,opacity:.55});
 
@@ -109,6 +109,7 @@ new GLTFLoader().load('model/house.glb',g=>{
     if(isGlass){ clay.transparent=true; clay.opacity=.22; clay.depthWrite=false; }
     if(isLed){ clay.emissive=new THREE.Color(0xffc56b); clay.emissiveIntensity=.6; }
     const night=real.clone(); if(isLed){ night.emissive=new THREE.Color(0xffb85c); night.emissiveIntensity=6; }
+    [clay,real,night].forEach(m=>m.side=THREE.DoubleSide);
     o.userData={kind,mats:{volume:clay,real,night}};
     o.castShadow=!isGlass && !isLed; o.receiveShadow=!isGlass;
     meshes.push(o);
