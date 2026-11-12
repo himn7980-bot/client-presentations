@@ -12,7 +12,7 @@
 body.light{--bg:#f6f2ea;--bg2:#ece5d8;--card:#ffffff;--line:#e0d7c7;--tx:#1f1d1a;--mut:#6b6052;--acc:#8a6a3a}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-padding-top:64px}
-body{background:var(--bg);color:var(--tx);font-family:Vazirmatn,Tahoma,system-ui,sans-serif;font-size:var(--fs);line-height:1.7;-webkit-tap-highlight-color:transparent}
+body{overscroll-behavior-y:none;background:var(--bg);color:var(--tx);font-family:Vazirmatn,Tahoma,system-ui,sans-serif;font-size:var(--fs);line-height:1.7;-webkit-tap-highlight-color:transparent}
 img{max-width:100%;display:block}
 button{font:inherit;color:inherit;cursor:pointer}
 .wrap{max-width:1180px;margin:auto;padding:0 16px}
@@ -205,7 +205,7 @@ function render(){
   <section id="model"><div class="wrap"><h2>${t.model_t}</h2><p class="sub">${t.model_s}</p>
     <div class="frame3d" id="f3d" style="background-image:url(${IMG}model3d.jpg)"><div class="start"><button class="btn" id="go3d">${t.load3d}</button></div></div>
     <div class="cta" style="margin-top:12px"><a class="btn ghost" href="model3d.html?lang=${L}">${t.full} ⤢</a></div></div></section>
-  <footer><div class="wrap">${t.foot}</div></footer>`;
+  <footer><div class="wrap">${t.foot} · v3</div></footer>`;
   $('#sheet').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><b>${t.set}</b><button class="ib" data-close>${t.close}</button></div>
     <div class="srow"><span>${t.lang}</span><div class="seg">${Object.keys(TX).map(k=>`<button data-setlang="${k}" class="${k===L?'on':''}">${TX[k].name}</button>`).join('')}</div></div>
     <div class="srow"><span>${t.theme}</span><div class="seg"><button data-theme="dark" class="${theme==='dark'?'on':''}">${t.dark}</button><button data-theme="light" class="${theme==='light'?'on':''}">${t.light}</button></div></div>
@@ -237,10 +237,14 @@ $('#lb img').addEventListener('dblclick',()=>$('#lb').classList.toggle('z'));
 let sx=null; document.addEventListener('touchstart',e=>{ if(e.target.closest('#vpic')) sx=e.touches[0].clientX; },{passive:true});
 document.addEventListener('touchend',e=>{ if(sx===null) return; const dx=e.changedTouches[0].clientX-sx; sx=null; if(Math.abs(dx)>45){ const rtl=TX[L].dir==='rtl'; stepView((dx<0)!==rtl?1:-1); } });
 addEventListener('keydown',e=>{ if($('#lb').classList.contains('open')&&e.key==='Escape') $('#lb').classList.remove('open','z'); });
-// scroll-spy for the nav
-let io, cur=''; function spy(){ cur=''; io&&io.disconnect(); io=new IntersectionObserver(es=>es.forEach(x=>{ if(x.isIntersecting){ if(cur===x.target.id) return; cur=x.target.id;
-    const nav=$('#nav'); let on=null; nav.querySelectorAll('a').forEach(a=>{ const m=a.dataset.k===cur; a.classList.toggle('on',m); if(m) on=a; });
-    if(on){ const nr=nav.getBoundingClientRect(), ar=on.getBoundingClientRect(); if(ar.left<nr.left||ar.right>nr.right) nav.scrollLeft+= (ar.left+ar.width/2)-(nr.left+nr.width/2); } } }),{rootMargin:'-45% 0px -50% 0px'}); document.querySelectorAll('main section[id]').forEach(s=>io.observe(s)); }
+// scroll-spy: only toggles a class, never scrolls anything
+let cur='', ticking=false;
+function spy(){ cur=''; onScroll(); }
+function onScroll(){ if(ticking) return; ticking=true; requestAnimationFrame(()=>{ ticking=false;
+  const y=innerHeight*0.4; let id='';
+  document.querySelectorAll('main section[id]').forEach(s=>{ if(s.getBoundingClientRect().top<=y) id=s.id; });
+  if(id===cur) return; cur=id; document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('on',a.dataset.k===id)); }); }
+addEventListener('scroll',onScroll,{passive:true});
 if(TX[L]){ $('#gate').classList.add('hide'); } else { L='fa'; }
 if(Q.get('lang')) store.set('k570_lang',L);
 render();
