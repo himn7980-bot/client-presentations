@@ -272,7 +272,7 @@ function render(){
   <section id="model"><div class="wrap"><h2>${t.model_t}</h2><p class="sub">${t.model_s}</p>
     <div class="frame3d" id="f3d" style="background-image:url(${IMG}model3d.jpg)"><div class="start"><button class="btn" id="go3d">${t.load3d}</button></div></div>
     <div class="cta" style="margin-top:12px"><a class="btn ghost" href="model3d.html?lang=${L}">${t.full} ⤢</a></div></div></section>
-  <footer><div class="wrap">${t.foot} · v12</div></footer>`;
+  <footer><div class="wrap">${t.foot} · v13</div></footer>`;
   $('#sheet').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><b>${t.set}</b><button class="ib" data-close>${t.close}</button></div>
     <div class="srow"><span>${t.lang}</span><div class="seg">${Object.keys(TX).map(k=>`<button data-setlang="${k}" class="${k===L?'on':''}">${TX[k].name}</button>`).join('')}</div></div>
     <div class="srow"><span>${t.theme}</span><div class="seg"><button data-theme="dark" class="${theme==='dark'?'on':''}">${t.dark}</button><button data-theme="light" class="${theme==='light'?'on':''}">${t.light}</button></div></div>
