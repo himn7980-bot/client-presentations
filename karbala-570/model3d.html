@@ -2,35 +2,161 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>خانه کربلا ۵٫۷۰ — مدل سه‌بعدی نما</title>
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Karbala 5.70 — 3D</title>
 <style>
-html,body{margin:0;height:100%;background:#14110e;color:#f3ece2;font-family:Vazirmatn,Tahoma,sans-serif}
-model-viewer{width:100%;height:100%;--poster-color:#14110e}
-#bar{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5;flex-wrap:wrap;justify-content:center}
-#bar button,#bar a{background:#2a2622;color:#f3ece2;border:1px solid #4a443c;border-radius:10px;padding:8px 14px;font:14px Tahoma;cursor:pointer;text-decoration:none}
-#bar .on{border-color:#c9a46d;color:#c9a46d}
-#hint{position:fixed;bottom:12px;width:100%;text-align:center;font-size:13px;color:#a89c8a}
+:root{--bg:#14110e;--panel:rgba(28,24,20,.92);--line:#4a443c;--tx:#f3ece2;--mut:#a89c8a;--acc:#c9a46d}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-family:Vazirmatn,Tahoma,system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+#c{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block}
+#ui{position:fixed;left:0;right:0;bottom:0;padding:10px 10px calc(10px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;pointer-events:auto;padding:2px}
+.row::-webkit-scrollbar{display:none}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px;backdrop-filter:blur(6px)}
+button,.b{flex:0 0 auto;background:#2a2622;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer;white-space:nowrap;text-decoration:none}
+button.on{border-color:var(--acc);color:var(--acc);background:#332b22}
+.lbl{font-size:12px;color:var(--mut);align-self:center;padding:0 4px;white-space:nowrap}
+input[type=range]{flex:1;min-width:120px;accent-color:#c9a46d}
+#top{position:fixed;top:calc(8px + env(safe-area-inset-top));left:8px;right:8px;display:flex;gap:6px;justify-content:space-between;pointer-events:none}
+#top>*{pointer-events:auto}
+#load{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--mut)}
+#more{display:none}#more.open{display:flex}
 </style>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
 </head>
 <body>
-<div id="bar">
-  <button id="day" class="on">روز · Day</button>
-  <button id="night">شب · Night</button>
-  <button id="front">نمای روبه‌رو · Front</button>
-  <a href="index.html">ارائه · Slides</a>
+<canvas id="c"></canvas>
+<div id="load">…</div>
+<div id="top">
+  <a class="b" id="back" href="index.html">‹</a>
+  <div class="row" style="justify-content:flex-end">
+    <button data-lang="fa">فا</button><button data-lang="ar">ع</button><button data-lang="en">EN</button>
+  </div>
 </div>
-<model-viewer id="mv" src="model/house.glb" alt="Karbala house 5.70 facade"
-  camera-controls touch-action="pan-y" shadow-intensity="1" exposure="1"
-  environment-image="neutral" camera-orbit="-25deg 80deg auto" ar ar-modes="webxr scene-viewer quick-look">
-</model-viewer>
-<div id="hint">چرخش: کشیدن · زوم: دو انگشت / اسکرول · Drag to orbit, pinch/scroll to zoom</div>
-<script>
-const mv=document.getElementById('mv'),d=document.getElementById('day'),n=document.getElementById('night');
-d.onclick=()=>{mv.exposure=1;mv.environmentImage='neutral';document.body.style.background='#14110e';d.classList.add('on');n.classList.remove('on')};
-n.onclick=()=>{mv.exposure=0.25;mv.environmentImage='legacy';document.body.style.background='#05070d';n.classList.add('on');d.classList.remove('on')};
-document.getElementById('front').onclick=()=>{mv.cameraOrbit='0deg 85deg auto';mv.cameraTarget='auto auto auto'};
+<div id="ui">
+  <div class="row panel" id="more">
+    <span class="lbl" data-t="sun"></span><input id="sun" type="range" min="0" max="100" value="35">
+    <span class="lbl" data-t="height"></span><input id="alt" type="range" min="10" max="85" value="45">
+  </div>
+  <div class="row panel">
+    <span class="lbl" data-t="floors"></span>
+    <button class="fl on" data-f="G" data-t="g"></button><button class="fl on" data-f="F1" data-t="f1"></button>
+    <button class="fl on" data-f="F2" data-t="f2"></button><button class="fl on" data-f="FACADE" data-t="fac"></button>
+  </div>
+  <div class="row panel">
+    <button class="md on" data-m="volume" data-t="volume"></button>
+    <button class="md" data-m="real" data-t="real"></button>
+    <button class="md" data-m="night" data-t="night"></button>
+    <button id="edges" class="on" data-t="edges"></button>
+    <button id="shadows" class="on" data-t="shadows"></button>
+    <button id="sunbtn" data-t="sunset"></button>
+    <button class="cv" data-v="front" data-t="front"></button>
+    <button class="cv" data-v="three" data-t="three"></button>
+    <button class="cv" data-v="top" data-t="topv"></button>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from './vendor/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from './vendor/jsm/controls/OrbitControls.js';
+
+const T = {
+ fa:{sun:'جهت آفتاب',height:'ارتفاع آفتاب',floors:'طبقه‌ها',g:'همکف',f1:'اول',f2:'دوم',fac:'نما',volume:'حجم + سایه',real:'واقعی',night:'شب',edges:'خطوط',shadows:'سایه',sunset:'تنظیم آفتاب',front:'روبه‌رو',three:'سه‌رخ',topv:'بالا',load:'در حال بارگذاری مدل…',err:'مدل بارگذاری نشد'},
+ ar:{sun:'اتجاه الشمس',height:'ارتفاع الشمس',floors:'الطوابق',g:'الأرضي',f1:'الأول',f2:'الثاني',fac:'الواجهة',volume:'كتلة + ظلال',real:'واقعي',night:'ليلي',edges:'الخطوط',shadows:'الظلال',sunset:'ضبط الشمس',front:'أمامي',three:'منظور',topv:'علوي',load:'جارٍ تحميل النموذج…',err:'تعذر تحميل النموذج'},
+ en:{sun:'Sun direction',height:'Sun height',floors:'Floors',g:'Ground',f1:'First',f2:'Second',fac:'Facade',volume:'Volume + shadow',real:'Realistic',night:'Night',edges:'Edges',shadows:'Shadows',sunset:'Sun',front:'Front',three:'3/4',topv:'Top',load:'Loading model…',err:'Model failed to load'}};
+const Q = new URLSearchParams(location.search);
+let lang = Q.get('lang'); try{ lang = lang || localStorage.getItem('k570_lang'); }catch(e){}
+if(!T[lang]) lang='fa';
+function applyLang(l){ lang=l; try{localStorage.setItem('k570_lang',l)}catch(e){}
+  document.documentElement.lang=l; document.documentElement.dir = l==='en'?'ltr':'rtl';
+  document.querySelectorAll('[data-t]').forEach(e=>e.textContent=T[l][e.dataset.t]);
+  document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));
+  document.getElementById('back').href='index.html?lang='+l;
+  const ld=document.getElementById('load'); if(ld.textContent==='…'||ld.dataset.s==='load') {ld.textContent=T[l].load; ld.dataset.s='load';}
+}
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>applyLang(b.dataset.lang));
+applyLang(lang);
+if(Q.get('embed')) document.getElementById('top').style.display='none';
+
+const canvas=document.getElementById('c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace; renderer.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(40,1,0.1,200);
+const controls=new OrbitControls(camera,canvas); controls.enableDamping=true; controls.maxPolarAngle=Math.PI*0.495;
+const hemi=new THREE.HemisphereLight(0xffffff,0x8a7a66,0.9); scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff3e0,2.6); sun.castShadow=true; sun.shadow.mapSize.set(2048,2048); sun.shadow.bias=-0.0004; sun.shadow.normalBias=0.02; scene.add(sun,sun.target);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(60,60),new THREE.MeshStandardMaterial({color:0xd9d2c5,roughness:1}));
+ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+
+const groups={}; const meshes=[]; const edgeLines=[]; let box, size, center;
+const CLAY={wall:0xf0ede8,slab:0xe6e2db,floor:0xe9e5de,marble:0xfbfaf7,walnut:0x8d7a68,oak:0xb3a089,arch:0x8d7a68,wood:0xb39a7e,rail:0x4a443c,cnc:0x5c5046,led:0xffd38a,glass:0xbcd6dc};
+const kindOf=n=>n.split('_').slice(1).join('_');
+const edgeMat=new THREE.LineBasicMaterial({color:0x1f1b17,transparent:true,opacity:.55});
+
+new GLTFLoader().load('model/house.glb',g=>{
+  const root=g.scene; scene.add(root);
+  root.traverse(o=>{ if(!o.isMesh) return;
+    const name=(o.name||o.parent?.name||''); const grp=name.split('_')[0]; const kind=kindOf(name);
+    (groups[grp]=groups[grp]||[]).push(o);
+    const orig=o.material; const isGlass=kind==='glass', isLed=kind==='led';
+    const real=orig.clone();
+    if(isGlass){ real.transmission=0; real.transparent=true; real.opacity=.28; real.color=new THREE.Color(0x9fc3cc); real.roughness=.05; real.metalness=0; real.depthWrite=false; }
+    const clay=new THREE.MeshStandardMaterial({color:CLAY[kind]??0xeeeeee,roughness:.92,metalness:0});
+    if(isGlass){ clay.transparent=true; clay.opacity=.22; clay.depthWrite=false; }
+    if(isLed){ clay.emissive=new THREE.Color(0xffc56b); clay.emissiveIntensity=.6; }
+    const night=real.clone(); if(isLed){ night.emissive=new THREE.Color(0xffb85c); night.emissiveIntensity=6; }
+    o.userData={kind,mats:{volume:clay,real,night}};
+    o.castShadow=!isGlass && !isLed; o.receiveShadow=!isGlass;
+    meshes.push(o);
+    if(!isGlass && !isLed){ const e=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry,28),edgeMat); o.add(e); edgeLines.push(e); }
+  });
+  box=new THREE.Box3().setFromObject(root); size=box.getSize(new THREE.Vector3()); center=box.getCenter(new THREE.Vector3());
+  ground.position.y=box.min.y-0.005;
+  const s=sun.shadow.camera, R=Math.max(size.x,size.y,size.z)*1.2; s.left=-R;s.right=R;s.top=R;s.bottom=-R;s.near=0.5;s.far=R*6; s.updateProjectionMatrix();
+  controls.target.copy(center); setView('three'); setMode('volume'); placeSun();
+  document.getElementById('load').style.display='none';
+},undefined,()=>{const l=document.getElementById('load'); l.dataset.s='err'; l.textContent=T[lang].err;});
+
+function setMode(m){
+  meshes.forEach(o=>o.material=o.userData.mats[m]);
+  document.querySelectorAll('.md').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+  const night=m==='night';
+  scene.background=new THREE.Color(night?0x070a12:(m==='volume'?0xe8e3da:0xcfd8de));
+  scene.fog=night?null:new THREE.Fog(scene.background.getHex(),40,90);
+  ground.material.color.set(night?0x1a1a1f:(m==='volume'?0xddd6ca:0xbfb6a6));
+  hemi.intensity=night?0.06:(m==='volume'?1.1:0.8); sun.intensity=night?0.05:(m==='volume'?2.2:2.8);
+  renderer.toneMappingExposure=night?1.1:1;
+  edgeMat.color.set(night?0x8a7a66:0x1f1b17); edgeMat.opacity=night?.35:.55;
+}
+function placeSun(){
+  if(!center) return;
+  const az=(document.getElementById('sun').value/100)*Math.PI*2 - Math.PI*0.75, alt=document.getElementById('alt').value*Math.PI/180, d=Math.max(size.x,size.y,size.z)*2;
+  sun.position.set(center.x+Math.cos(alt)*Math.sin(az)*d, center.y+Math.sin(alt)*d, center.z+Math.cos(alt)*Math.cos(az)*d);
+  sun.target.position.copy(center);
+}
+function setView(v){
+  if(!center) return; cur=v;
+  const r=size.length()/2, vf=camera.fov*Math.PI/180, hf=2*Math.atan(Math.tan(vf/2)*camera.aspect);
+  const d=r/Math.sin(Math.min(vf,hf)/2)*0.72;
+  const P={front:[0,0.06,1],three:[-0.55,0.3,1],top:[-0.35,1.6,0.6]}[v];
+  const dir=new THREE.Vector3(...P).normalize(); const tg=center.clone(); tg.y-=r*0.18;
+  camera.position.copy(tg).addScaledVector(dir,d); controls.target.copy(tg); controls.update();
+}
+let cur='three';
+document.querySelectorAll('.md').forEach(b=>b.onclick=()=>setMode(b.dataset.m));
+document.querySelectorAll('.cv').forEach(b=>b.onclick=()=>setView(b.dataset.v));
+document.querySelectorAll('.fl').forEach(b=>b.onclick=()=>{ b.classList.toggle('on'); (groups[b.dataset.f]||[]).forEach(o=>o.visible=b.classList.contains('on')); });
+document.getElementById('edges').onclick=e=>{ e.target.classList.toggle('on'); const v=e.target.classList.contains('on'); edgeLines.forEach(l=>l.visible=v); };
+document.getElementById('shadows').onclick=e=>{ e.target.classList.toggle('on'); sun.castShadow=e.target.classList.contains('on'); };
+document.getElementById('sunbtn').onclick=e=>{ e.target.classList.toggle('on'); document.getElementById('more').classList.toggle('open'); };
+['sun','alt'].forEach(id=>document.getElementById(id).oninput=placeSun);
+
+function resize(){ const w=innerWidth,h=innerHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w<h?50:38; camera.updateProjectionMatrix(); if(center) setView(cur); }
+addEventListener('resize',resize); resize();
+renderer.setAnimationLoop(()=>{ controls.update(); renderer.render(scene,camera); });
 </script>
 </body>
 </html>

@@ -1,445 +1,247 @@
-<!DOCTYPE html><html lang="fa"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>خانه کربلا — ArchTverse</title>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;800&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14110e">
+<title>ArchTverse — Karbala 5.70</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;background:#111;overflow:hidden}
-#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center}
-#stage>section{position:absolute;inset:0;width:1920px;height:1080px;display:none;overflow:hidden}
-#stage>section.on{display:flex}ul{padding-inline-start:1.2em}
-#nav{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center;font:14px Tahoma;color:#ddd;z-index:9}
-#nav button{background:#2a2622;color:#eee;border:1px solid #555;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:16px}
-#nav a{color:#c9a46d;text-decoration:none;margin:0 6px}
-</style></head><body><div id="stage">
-<section id="langpick" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#1f1d1a;color:#f6f2ea;padding:128px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:72px">
-<p style="font-size:28px;color:#c9a46d;font-weight:700">ArchTverse · خانه ۵.۷۰ × ۱۲.۸۴ · Karbala</p>
-<h1 style="font-size:64px;font-weight:800">انتخاب زبان · اختر اللغة · Choose language</h1>
-<div style="display:flex;gap:48px">
-<a href="#slide-2" style="display:flex;flex-direction:column;gap:12px;width:440px;padding:48px;border:2px solid #c9a46d;border-radius:20px;color:#f6f2ea;text-decoration:none"><p style="font-size:64px;font-weight:800">فارسی</p><p style="font-size:28px;color:#e8dfd0">ارائه به فارسی</p></a>
-<a href="#slide-16" style="display:flex;flex-direction:column;gap:12px;width:440px;padding:48px;border:2px solid #c9a46d;border-radius:20px;color:#f6f2ea;text-decoration:none"><p style="font-size:64px;font-weight:800">العربية</p><p style="font-size:28px;color:#e8dfd0">العرض بالعربية</p></a>
-<a href="#slide-30" style="display:flex;flex-direction:column;gap:12px;width:440px;padding:48px;border:2px solid #c9a46d;border-radius:20px;color:#f6f2ea;text-decoration:none"><p style="font-size:64px;font-weight:800">English</p><p style="font-size:28px;color:#e8dfd0">Presentation in English</p></a>
+:root{--bg:#14110e;--bg2:#1f1b17;--card:#26211c;--line:#3d352c;--tx:#f3ece2;--mut:#b3a690;--acc:#c9a46d;--fs:16px}
+body.light{--bg:#f6f2ea;--bg2:#ece5d8;--card:#ffffff;--line:#e0d7c7;--tx:#1f1d1a;--mut:#6b6052;--acc:#8a6a3a}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{background:var(--bg);color:var(--tx);font-family:Vazirmatn,Tahoma,system-ui,sans-serif;font-size:var(--fs);line-height:1.7;-webkit-tap-highlight-color:transparent}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:auto;padding:0 16px}
+/* header */
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:8px;height:56px}
+.brand{font-weight:800;color:var(--acc);white-space:nowrap;font-size:15px}
+.nav{flex:1;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;mask-image:linear-gradient(90deg,transparent,#000 12px,#000 calc(100% - 12px),transparent)}
+.nav::-webkit-scrollbar{display:none}
+.nav a{flex:0 0 auto;color:var(--mut);text-decoration:none;font-size:14px;padding:6px 10px;border-radius:999px}
+.nav a.on{color:var(--tx);background:var(--card)}
+.ib{flex:0 0 auto;background:var(--card);border:1px solid var(--line);border-radius:10px;height:36px;min-width:36px;padding:0 10px;font-size:14px}
+/* settings sheet */
+#sheet{position:fixed;inset:auto 0 0 0;z-index:40;background:var(--bg2);border-top:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .25s}
+#sheet.open{transform:none}
+#shade{position:fixed;inset:0;z-index:39;background:#0007;display:none}#shade.open{display:block}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button,.chip{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-size:14px}
+.seg button.on,.chip.on{border-color:var(--acc);color:var(--acc)}
+/* language gate */
+#gate{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:24px;text-align:center}
+#gate.hide{display:none}
+#gate h1{font-size:clamp(22px,5vw,34px);font-weight:800}
+#gate .opts{display:grid;gap:14px;width:min(420px,100%)}
+#gate .opts button{background:var(--card);border:1px solid var(--acc);border-radius:16px;padding:18px;display:flex;justify-content:space-between;align-items:center;font-size:22px;font-weight:800}
+#gate .opts small{font-size:14px;font-weight:400;color:var(--mut)}
+/* sections */
+section{padding:56px 0;border-bottom:1px solid var(--line)}
+h2{font-size:clamp(24px,5vw,40px);font-weight:800;line-height:1.3;margin-bottom:8px}
+.sub{color:var(--mut);margin-bottom:24px}
+.eyebrow{color:var(--acc);font-weight:600;font-size:14px;margin-bottom:6px}
+ul.b{padding-inline-start:1.2em;display:grid;gap:6px}
+.grid{display:grid;gap:14px}
+@media(min-width:760px){.two{grid-template-columns:1.1fr 1fr;align-items:center}.g3{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.fact b{display:block;font-size:clamp(22px,4.5vw,34px);color:var(--acc);line-height:1.3}
+.fact span{color:var(--mut);font-size:14px}
+.facts{grid-template-columns:repeat(2,1fr)}
+@media(min-width:760px){.facts{grid-template-columns:repeat(3,1fr)}}
+.pic{border-radius:16px;overflow:hidden;background:var(--bg2);border:1px solid var(--line);position:relative;cursor:zoom-in}
+.pic img{width:100%;height:100%;object-fit:contain}
+.pic .zoom{position:absolute;inset-inline-end:10px;bottom:10px;background:#000a;color:#fff;border-radius:8px;padding:2px 8px;font-size:13px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+/* hero */
+#cover{padding:0;border:0}
+.hero{display:grid;min-height:calc(100svh - 56px)}
+@media(min-width:900px){.hero{grid-template-columns:1fr 1fr}}
+.hero .txt{display:flex;flex-direction:column;justify-content:center;gap:14px;padding:32px 16px}
+.hero h1{font-size:clamp(34px,8vw,68px);font-weight:800;line-height:1.15}
+.hero .img{min-height:52svh;background:var(--bg2) center/cover no-repeat}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{background:var(--acc);color:#14110e;border:0;border-radius:12px;padding:12px 18px;font-weight:800;text-decoration:none;display:inline-block}
+.btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--line)}
+/* views */
+.vmain{position:relative}
+.vmain .pic{aspect-ratio:3/2}
+.vmain .pic img{object-fit:cover}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:#000a;color:#fff;border:0;font-size:22px;z-index:2}
+.arrow.p{inset-inline-start:8px}.arrow.n{inset-inline-end:8px}
+.letters{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:12px 0}
+.letters button{flex:0 0 auto;width:44px;height:44px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-weight:800}
+.letters button.on{background:var(--acc);color:#14110e;border-color:var(--acc)}
+.vinfo{display:grid;gap:14px}
+@media(min-width:760px){.vinfo{grid-template-columns:1fr 260px}}
+.key{aspect-ratio:440/260}
+/* 3d */
+.frame3d{position:relative;aspect-ratio:3/4;max-height:80svh;width:100%;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#e8e3da center/cover no-repeat}
+@media(min-width:760px){.frame3d{aspect-ratio:16/9}}
+.frame3d iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.frame3d .start{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#0006}
+/* lightbox */
+#lb{position:fixed;inset:0;z-index:70;background:#000e;display:none;overflow:auto;touch-action:pan-x pan-y pinch-zoom}
+#lb.open{display:block}
+#lb img{max-width:none;width:100%;margin:auto;transition:width .2s}
+#lb.z img{width:250%}
+#lb .x{position:fixed;top:calc(10px + env(safe-area-inset-top));inset-inline-end:10px;z-index:2;background:#222;color:#fff;border:1px solid #555;border-radius:10px;padding:6px 12px}
+#lb .hint{position:fixed;bottom:12px;left:0;right:0;text-align:center;color:#aaa;font-size:13px}
+footer{padding:28px 0 calc(28px + env(safe-area-inset-bottom));color:var(--mut);font-size:14px}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div style="color:var(--acc);font-weight:800">ArchTverse</div>
+  <h1>انتخاب زبان · اختر اللغة · Choose language</h1>
+  <div class="opts">
+    <button data-setlang="fa">فارسی <small>ارائه به فارسی</small></button>
+    <button data-setlang="ar">العربية <small>العرض بالعربية</small></button>
+    <button data-setlang="en">English <small>Presentation in English</small></button>
+  </div>
 </div>
-</section>
 
-<section id="cover" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#1f1d1a;color:#f6f2ea;padding:0;display:flex;flex-direction:row-reverse">
-<div style="width:900px;display:flex;flex-direction:column;justify-content:center;gap:32px;padding:128px">
-<p style="font-size:28px;color:#c9a46d;font-weight:700;text-align:right">ArchTverse · کربلا</p>
-<h1 style="font-size:88px;font-weight:800;line-height:1.15;text-align:right">خانه ۵.۷۰ × ۱۲.۸۴</h1>
-<p style="font-size:36px;line-height:1.5;color:#e8dfd0;text-align:right">پلان‌ها، فضاها و رندرهای داخلی<br>همکف + دو طبقهٔ تیپ</p>
-</div>
-<img src="img/model3d.jpg" alt="مدل سه‌بعدی" style="width:1020px;height:1080px;object-fit:cover">
-<aside>ارائهٔ پلان و فضاهای داخلی. نما در مرحلهٔ بعد.</aside>
-</section>
+<header><div class="wrap hrow">
+  <div class="brand">ArchTverse</div>
+  <nav class="nav" id="nav"></nav>
+  <button class="ib" id="setbtn" aria-label="settings">⚙︎</button>
+</div></header>
 
-<section id="facts" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:128px;display:flex;flex-direction:column;gap:56px">
-<h2 style="font-size:64px;font-weight:800;text-align:right">پروژه در یک نگاه</h2>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px"><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:64px;font-weight:800;color:#8a6a3a;text-align:right">۵.۷۰ × ۱۲.۸۴</p><p style="font-size:28px;color:#5b5348;text-align:right">ابعاد زمین بیرون‌به‌بیرون (متر)</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:64px;font-weight:800;color:#8a6a3a;text-align:right">۳ طبقه</p><p style="font-size:28px;color:#5b5348;text-align:right">همکف + طبقهٔ اول و دوم تیپ</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:64px;font-weight:800;color:#8a6a3a;text-align:right">۳۰۰ + ۲۰</p><p style="font-size:28px;color:#5b5348;text-align:right">کف تا زیر سقف + بتن سقف (سانتی‌متر)</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:64px;font-weight:800;color:#8a6a3a;text-align:right">۲۱ سانت</p><p style="font-size:28px;color:#5b5348;text-align:right">ضخامت دیوارها (برداشت ۲۰ تا ۲۲)</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:64px;font-weight:800;color:#8a6a3a;text-align:right">۱ نما</p><p style="font-size:28px;color:#5b5348;text-align:right">فقط جبههٔ جلو؛ سمت چپ بدون همسایه</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:64px;font-weight:800;color:#8a6a3a;text-align:right">۱۷ پله</p><p style="font-size:28px;color:#5b5348;text-align:right">پلهٔ U شکل مرمر، تا بام</p></div></div>
-<aside>همهٔ ابعاد از برداشت کارگاه است؛ ابعاد داخلی مبناست و مغایرت‌ها در فایل برداشت ثبت شده.</aside>
-</section>
+<main id="main"></main>
 
-<section id="plan_g" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#e8dfd0;color:#1f1d1a;padding:96px 128px;display:flex;flex-direction:row-reverse;gap:80px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:64px;font-weight:800;text-align:right">پلان همکف</h2>
-<ul style="font-size:30px;line-height:1.6;text-align:right"><li>ورودی نیمه‌باز با درِ فلزی و دو درِ کنار هم: راهرو و سالن</li><li>پلهٔ مرمر کنار نما با CNC یکسره تا بام</li><li>سرویس زیر پله با درِ ۹۰ × ۲۰۰</li><li>راهرو ۱۰۲ سانتی که در انتها به سالن می‌چرخد</li><li>آشپزخانه، سرویس ۱۳۰ × ۱۹۸ و نورگیر ۱۳۰ × ۹۴ در عقب</li></ul>
-<p style="font-size:24px;color:#5b5348;text-align:right">حروف نارنجی = جای دوربین رندرها</p>
-</div>
-<img src="img/pres_plan_g.jpg" alt="پلان همکف" style="width:520px;height:888px;object-fit:contain;background:#faf8f4;border-radius:16px">
-<aside>دیدهای F و G روی این پلان.</aside>
-</section>
+<div id="shade"></div>
+<div id="sheet" role="dialog"></div>
+<div id="lb"><button class="x">✕</button><img alt=""><div class="hint"></div></div>
 
-<section id="plan_1" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#e8dfd0;color:#1f1d1a;padding:96px 128px;display:flex;flex-direction:row-reverse;gap:80px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:64px;font-weight:800;text-align:right">پلان طبقهٔ اول و دوم (تیپ)</h2>
-<ul style="font-size:30px;line-height:1.6;text-align:right"><li>بالکن نیمه‌باز ۲۶۴ × ۲۲۱ با نردهٔ شیشه‌ای ۱۱۰</li><li>پنجرهٔ ۲ متری سالن رو به چاه پله و CNC</li><li>سالن با دیوار تلویزیون روی دیوار همسایه</li><li>آشپزخانهٔ L شکل با سرامیک تا سقف</li><li>همهٔ درها ۲۵۰؛ پنجره‌های داخلی از ۹۰ تا سقف</li></ul>
-<p style="font-size:24px;color:#5b5348;text-align:right">حروف نارنجی = جای دوربین رندرها</p>
-</div>
-<img src="img/pres_plan_1.jpg" alt="پلان طبقهٔ اول و دوم (تیپ)" style="width:520px;height:888px;object-fit:contain;background:#faf8f4;border-radius:16px">
-<aside>دیدهای A تا E روی این پلان. طبقهٔ دوم عین طبقهٔ اول است.</aside>
-</section>
-
-<section id="lang" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#1f1d1a;color:#f6f2ea;padding:128px;display:flex;flex-direction:column;gap:56px">
-<h2 style="font-size:64px;font-weight:800;text-align:right">زبان طراحی: نئوکلاسیک گرم</h2>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px"><div style="border:1px solid #4a443c;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:16px"><h3 style="font-size:36px;font-weight:700;color:#c9a46d;text-align:right">فضاهای داخلی</h3><p style="font-size:28px;line-height:1.6;color:#e8dfd0;text-align:right">دیوار سفید گرم و گریج، قاب‌بندی ظریف فقط روی دیوارهای تأکیدی، کف سرامیک طرح مرمر ۶۰ × ۶۰</p></div><div style="border:1px solid #4a443c;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:16px"><h3 style="font-size:36px;font-weight:700;color:#c9a46d;text-align:right">سقف‌ها</h3><p style="font-size:28px;line-height:1.6;color:#e8dfd0;text-align:right">سالن: سقف کاذب مستطیلی با گلویی و نور مخفی. آشپزخانه: سقف ساده با باکس جداکننده. سرویس: ۲۷۰</p></div><div style="border:1px solid #4a443c;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:16px"><h3 style="font-size:36px;font-weight:700;color:#c9a46d;text-align:right">فضاهای نیمه‌باز</h3><p style="font-size:28px;line-height:1.6;color:#e8dfd0;text-align:right">ورودی، پله و بالکن: سنگ تراورتن، بدون قاب‌بندی، فلز برنزی تیره، دیوارکوب بیرونی</p></div></div>
-</section>
-
-<section id="vA" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">نمای A · طبقهٔ اول</p>
-<h2 style="font-size:56px;font-weight:800;line-height:1.2;text-align:right">سالن</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">از آشپزخانه رو به جلو</p>
-<img src="img/pres_key_A.jpg" alt="جای دوربین A" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>تلویزیون روی دیوار همسایه، بدون بازشو</li><li>پنجرهٔ ۲۰۰ سانتی رو به چاه پله و CNC</li><li>درِ ورودی ۱۰۰ × ۲۵۰ و دهانهٔ ۱۹۱ به راهرو</li></ul>
-</div>
-<img src="img/r_A.jpg" alt="رندر A" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-<aside>اصلاح باقی‌مانده: جهت پله‌های پشت پنجره.</aside>
-</section>
-
-<section id="vB" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">نمای B · طبقهٔ اول</p>
-<h2 style="font-size:56px;font-weight:800;line-height:1.2;text-align:right">سالن و آشپزخانه</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">از ورودی رو به آشپزخانه</p>
-<img src="img/pres_key_B.jpg" alt="جای دوربین B" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>آشپزخانه روی دیوار پشت و راست، سرامیک تا سقف</li><li>چپ: دهانهٔ راهرو، درِ سرویس، پنجرهٔ نورگیر</li><li>دیوار تلویزیون سمت راست</li></ul>
-</div>
-<img src="img/r_B.jpg" alt="رندر B" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-<aside>اصلاح باقی‌مانده: سقف جدا برای سالن و آشپزخانه، میز ناهارخوری، درِ سرویس بلوط روشن.</aside>
-</section>
-
-<section id="vC" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">نمای C · طبقهٔ اول</p>
-<h2 style="font-size:56px;font-weight:800;line-height:1.2;text-align:right">راهرو</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">۱۰۲ × ۶۸۵ سانت</p>
-<img src="img/pres_key_C.jpg" alt="جای دوربین C" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>دو دیوار بسته با قاب‌بندی یکسان</li><li>انتهای بسته؛ چرخش ۱۹۱ به سالن سمت راست</li><li>نور مخفی دو طرف سقف</li></ul>
-</div>
-<img src="img/r_C.jpg" alt="رندر C" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-<aside>اصلاح باقی‌مانده: راهرو بلندتر دیده شود، قاب‌بندی دیوار راست.</aside>
-</section>
-
-<section id="vD" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">نمای D · طبقهٔ اول</p>
-<h2 style="font-size:56px;font-weight:800;line-height:1.2;text-align:right">سرویس بهداشتی</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">۱۳۰ × ۱۹۸، سقف کاذب ۲۷۰</p>
-<img src="img/pres_key_D.jpg" alt="جای دوربین D" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>سرامیک تا سقف با دیوار تأکیدی سنگی</li><li>پنجرهٔ ۵۰ × ۶۰ با کف ۱۹۵ رو به نورگیر</li><li>توالت وال‌هنگ و روشویی گردو</li></ul>
-</div>
-<img src="img/r_D.jpg" alt="رندر D" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-<aside>اصلاح باقی‌مانده: درِ سرویس به انتهای دیوار راست برود و چیدمان عوض شود.</aside>
-</section>
-
-<section id="vE" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">نمای E · طبقهٔ اول</p>
-<h2 style="font-size:56px;font-weight:800;line-height:1.2;text-align:right">بالکن / پیش‌ورودی</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">نیمه‌باز، ۲۶۴ × ۲۲۱</p>
-<img src="img/pres_key_E.jpg" alt="جای دوربین E" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>دو در: راهرو ۹۰ × ۲۵۰ و سالن ۱۰۰ × ۲۵۰</li><li>نردهٔ شیشه‌ای ۱۱۰ رو به خیابان</li><li>دیوار تراورتن، چراغ بیرونی، گیاه</li></ul>
-</div>
-<img src="img/r_E.jpg" alt="رندر E" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-<aside>اصلاح باقی‌مانده: تیغهٔ بین دو در ۲۱ سانت، دیوار پشت سنگی، جهت دستگیرهٔ درِ سالن.</aside>
-</section>
-
-<section id="vF" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">نمای F · همکف</p>
-<h2 style="font-size:56px;font-weight:800;line-height:1.2;text-align:right">پله و CNC</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">فضای نیمه‌باز ورودی</p>
-<img src="img/pres_key_F.jpg" alt="جای دوربین F" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>CNC برنزی بدون شیشه، از ۲۴۰ تا بام</li><li>پلهٔ مرمر با یک نرده در سمت باز</li><li>سرویس زیر پله ۹۰ × ۲۰۰، بلوط روشن</li></ul>
-</div>
-<img src="img/r_F.jpg" alt="رندر F" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-<aside>اصلاح باقی‌مانده: چرخش پله بعد از ۹ پله، میله‌های افقی درِ ورودی، دستگیرهٔ سرویس زیر پله.</aside>
-</section>
-
-<section id="vG" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">نمای G · همکف</p>
-<h2 style="font-size:56px;font-weight:800;line-height:1.2;text-align:right">ورودی</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">دو درِ کنار هم</p>
-<img src="img/pres_key_G.jpg" alt="جای دوربین G" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>درِ راهرو و درِ سالن، گردو</li><li>پنجرهٔ ۱۲۰ رو به سالن زیر بازوی برگشت</li><li>دیوار تراورتن، سرویس زیر پله</li></ul>
-</div>
-<img src="img/r_G.jpg" alt="رندر G" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-<aside>اصلاح باقی‌مانده: تیغهٔ بین دو در ۲۱ سانت، دستگیرهٔ سرویس زیر پله، دیوارکوب‌ها.</aside>
-</section>
-
-<section id="model" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#1f1d1a;color:#f6f2ea;padding:96px 128px;display:flex;flex-direction:row-reverse;gap:80px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:64px;font-weight:800;text-align:right">مدل سه‌بعدی و قدم بعد</h2>
-<p style="font-size:30px;line-height:1.6;color:#e8dfd0;text-align:right">مدل حجمی از روی همین پلان‌ها ساخته شده و با گشت تعاملی، داخل همهٔ طبقه‌ها دیده می‌شود.</p>
-<ul style="font-size:30px;line-height:1.6;text-align:right"><li>اجرای اصلاحات رندرها</li><li>هماهنگی نهایی ابعاد برداشت</li><li>طراحی نما با قاب‌های مرمر و CNC</li></ul>
-</div>
-<img src="img/model3d.jpg" alt="مدل سه‌بعدی" style="width:760px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="facade" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#e8dfd0;color:#1f1d1a;padding:96px 128px;display:flex;flex-direction:row-reverse;gap:96px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:60px;font-weight:800;text-align:right">نمای اصلی — بر اساس پلان</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">نمای روبه‌رو از مدل سه‌بعدی؛ همهٔ دهانه‌ها و ابعاد از پلان</p>
-<ul style="font-size:30px;line-height:1.6;text-align:right"><li>قاب سنگی بالکن‌ها تا بالای خرپشته، با شیار نوری فرورفته</li><li>میله‌های برنزی جلوی پله، بدون شیشه، از ۲۴۰ تا بام و برگشت روی خرپشته</li><li>پنل بالا: سنگ‌های ۱۵ سانتی، یکی در میان جلو و عقب</li><li>قاب همکف برجسته، سنگ افقی با بند ۱ سانتی، درِ ورودی چوبی ۲۸۰</li><li>خرپشته ۲۷۰ و جان‌پناه ۱۵۰</li></ul>
-<p style="font-size:24px;color:#8a6a3a;text-align:right">ارتفاع خرپشته و جان‌پناه طبق دستور کارفرما؛ بیرون‌زدگی قاب‌ها و ضخامت سنگ در دست تأیید</p>
-</div>
-<img src="img/facade_elev.png" alt="facade" style="width:450px;height:888px;object-fit:contain">
-</section>
-
-<section id="cover_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#1f1d1a;color:#f6f2ea;padding:0;display:flex;flex-direction:row-reverse">
-<div style="width:900px;display:flex;flex-direction:column;justify-content:center;gap:32px;padding:128px">
-<p style="font-size:28px;color:#c9a46d;font-weight:700;text-align:right">ArchTverse · كربلاء</p>
-<h1 style="font-size:88px;font-weight:800;line-height:1.15;text-align:right">منزل ٥٫٧٠ × ١٢٫٨٤</h1>
-<p style="font-size:36px;line-height:1.5;color:#e8dfd0;text-align:right">المخططات والفراغات والتصاميم الداخلية<br>طابق أرضي + طابقان متكرران</p>
-</div>
-<img src="img/model3d.jpg" alt="3D" style="width:1020px;height:1080px;object-fit:cover">
-</section>
-
-<section id="facts_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:128px;display:flex;flex-direction:column;gap:56px">
-<h2 style="font-size:64px;font-weight:800;text-align:right">المشروع في لمحة</h2>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px"><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:right">٥٫٧٠ × ١٢٫٨٤</p><p style="font-size:28px;color:#5b5348;text-align:right">أبعاد الأرض من الخارج (متر)</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:right">٣ طوابق</p><p style="font-size:28px;color:#5b5348;text-align:right">أرضي + طابق أول وثانٍ متكرران</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:right">٣٠٠ + ٢٠</p><p style="font-size:28px;color:#5b5348;text-align:right">من الأرضية إلى السقف + سماكة السقف (سم)</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:right">٢١ سم</p><p style="font-size:28px;color:#5b5348;text-align:right">سماكة الجدران (قياس ٢٠–٢٢)</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:right">واجهة واحدة</p><p style="font-size:28px;color:#5b5348;text-align:right">الواجهة الأمامية فقط؛ الجهة اليسرى بلا جار</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:right">١٧ درجة</p><p style="font-size:28px;color:#5b5348;text-align:right">درج على شكل U من الرخام حتى السطح</p></div></div>
-</section>
-
-<section id="plan_g_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#e8dfd0;color:#1f1d1a;padding:96px 128px;display:flex;flex-direction:row-reverse;gap:80px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:60px;font-weight:800;text-align:right">مخطط الطابق الأرضي</h2>
-<ul style="font-size:30px;line-height:1.6;text-align:right"><li>مدخل شبه مفتوح ببوابة معدنية وبابين متجاورين: الممر والصالة</li><li>درج رخامي بجانب الواجهة مع شاشة CNC متصلة حتى السطح</li><li>حمّام تحت الدرج بباب ٩٠ × ٢٠٠</li><li>ممر بعرض ١٠٢ سم ينعطف في نهايته نحو الصالة</li><li>المطبخ والحمّام ١٣٠ × ١٩٨ والمنور ١٣٠ × ٩٤ في الخلف</li></ul>
-<p style="font-size:24px;color:#5b5348;text-align:right">الحروف البرتقالية = مواقع كاميرات اللقطات</p>
-</div>
-<img src="img/pres_plan_g.jpg" alt="مخطط الطابق الأرضي" style="width:520px;height:888px;object-fit:contain;background:#faf8f4;border-radius:16px">
-</section>
-
-<section id="plan_1_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#e8dfd0;color:#1f1d1a;padding:96px 128px;display:flex;flex-direction:row-reverse;gap:80px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:60px;font-weight:800;text-align:right">مخطط الطابق الأول والثاني (متكرر)</h2>
-<ul style="font-size:30px;line-height:1.6;text-align:right"><li>شرفة شبه مفتوحة ٢٦٤ × ٢٢١ بدرابزين زجاجي ١١٠</li><li>نافذة الصالة بعرض ٢ م تطل على بئر الدرج وشاشة CNC</li><li>الصالة مع جدار التلفاز على الجدار المشترك</li><li>مطبخ على شكل L بسيراميك حتى السقف</li><li>جميع الأبواب بارتفاع ٢٥٠؛ النوافذ الداخلية من ٩٠ حتى السقف</li></ul>
-<p style="font-size:24px;color:#5b5348;text-align:right">الحروف البرتقالية = مواقع كاميرات اللقطات</p>
-</div>
-<img src="img/pres_plan_1.jpg" alt="مخطط الطابق الأول والثاني (متكرر)" style="width:520px;height:888px;object-fit:contain;background:#faf8f4;border-radius:16px">
-</section>
-
-<section id="lang_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#1f1d1a;color:#f6f2ea;padding:128px;display:flex;flex-direction:column;gap:56px">
-<h2 style="font-size:60px;font-weight:800;text-align:right">لغة التصميم: نيوكلاسيك دافئ</h2>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px"><div style="border:1px solid #4a443c;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:16px"><h3 style="font-size:36px;font-weight:700;color:#c9a46d;text-align:right">الفراغات الداخلية</h3><p style="font-size:28px;line-height:1.6;color:#e8dfd0;text-align:right">جدران أبيض دافئ ورمادي بيج، كرانيش رفيعة على الجدران المميزة فقط، أرضيات سيراميك بنقشة رخام ٦٠ × ٦٠</p></div><div style="border:1px solid #4a443c;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:16px"><h3 style="font-size:36px;font-weight:700;color:#c9a46d;text-align:right">الأسقف</h3><p style="font-size:28px;line-height:1.6;color:#e8dfd0;text-align:right">الصالة: سقف مستعار مستطيل بكورنيش وإضاءة مخفية. المطبخ: سقف بسيط مع بوكس فاصل. الحمّام: ٢٧٠</p></div><div style="border:1px solid #4a443c;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:16px"><h3 style="font-size:36px;font-weight:700;color:#c9a46d;text-align:right">الفراغات شبه المفتوحة</h3><p style="font-size:28px;line-height:1.6;color:#e8dfd0;text-align:right">المدخل والدرج والشرفة: حجر ترافرتين، بلا كرانيش، معدن برونزي داكن، إنارة جدارية خارجية</p></div></div>
-</section>
-
-<section id="vA_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">اللقطة A · الطابق الأول</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:right">الصالة</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">من المطبخ باتجاه الأمام</p>
-<img src="img/pres_key_A.jpg" alt="A" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>التلفاز على الجدار المشترك بلا فتحات</li><li>نافذة بعرض ٢٠٠ سم على بئر الدرج وشاشة CNC</li><li>باب المدخل ١٠٠ × ٢٥٠ وفتحة ١٩١ إلى الممر</li></ul>
-</div>
-<img src="img/r_A.jpg" alt="A" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vB_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">اللقطة B · الطابق الأول</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:right">الصالة والمطبخ</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">من المدخل باتجاه المطبخ</p>
-<img src="img/pres_key_B.jpg" alt="B" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>المطبخ على الجدارين الخلفي والأيمن، سيراميك حتى السقف</li><li>يسارًا: فتحة الممر، باب الحمّام، نافذة المنور</li><li>جدار التلفاز على اليمين</li></ul>
-</div>
-<img src="img/r_B.jpg" alt="B" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vC_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">اللقطة C · الطابق الأول</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:right">الممر</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">١٠٢ × ٦٨٥ سم</p>
-<img src="img/pres_key_C.jpg" alt="C" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>جداران مغلقان بكرانيش متطابقة</li><li>نهاية مغلقة؛ انعطاف ١٩١ نحو الصالة على اليمين</li><li>إضاءة مخفية على جانبي السقف</li></ul>
-</div>
-<img src="img/r_C.jpg" alt="C" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vD_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">اللقطة D · الطابق الأول</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:right">الحمّام</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">١٣٠ × ١٩٨، سقف مستعار ٢٧٠</p>
-<img src="img/pres_key_D.jpg" alt="D" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>سيراميك حتى السقف مع جدار حجري مميز</li><li>نافذة ٥٠ × ٦٠ بارتفاع جلسة ١٩٥ على المنور</li><li>مرحاض معلق ومغسلة من خشب الجوز</li></ul>
-</div>
-<img src="img/r_D.jpg" alt="D" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vE_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">اللقطة E · الطابق الأول</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:right">الشرفة / ما قبل المدخل</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">شبه مفتوحة، ٢٦٤ × ٢٢١</p>
-<img src="img/pres_key_E.jpg" alt="E" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>بابان: الممر ٩٠ × ٢٥٠ والصالة ١٠٠ × ٢٥٠</li><li>درابزين زجاجي ١١٠ باتجاه الشارع</li><li>جدار ترافرتين، إنارة خارجية، نباتات</li></ul>
-</div>
-<img src="img/r_E.jpg" alt="E" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vF_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">اللقطة F · الطابق الأرضي</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:right">الدرج وشاشة CNC</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">فراغ المدخل شبه المفتوح</p>
-<img src="img/pres_key_F.jpg" alt="F" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>شاشة CNC برونزية بلا زجاج من ٢٤٠ حتى السطح</li><li>درج رخامي بدرابزين واحد على الجهة المفتوحة</li><li>حمّام تحت الدرج ٩٠ × ٢٠٠، خشب بلوط فاتح</li></ul>
-</div>
-<img src="img/r_F.jpg" alt="F" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vG_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row-reverse;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:right">اللقطة G · الطابق الأرضي</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:right">المدخل</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">بابان متجاوران</p>
-<img src="img/pres_key_G.jpg" alt="G" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:right"><li>باب الممر وباب الصالة، خشب الجوز</li><li>نافذة ١٢٠ على الصالة تحت الشاحط الراجع</li><li>جدار ترافرتين، حمّام تحت الدرج</li></ul>
-</div>
-<img src="img/r_G.jpg" alt="G" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="model_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#1f1d1a;color:#f6f2ea;padding:96px 128px;display:flex;flex-direction:row-reverse;gap:80px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:60px;font-weight:800;text-align:right">النموذج ثلاثي الأبعاد والخطوة التالية</h2>
-<p style="font-size:30px;line-height:1.6;color:#e8dfd0;text-align:right">نموذج حجمي مبني على هذه المخططات، ويمكن التجول داخله في جميع الطوابق.</p>
-<ul style="font-size:30px;line-height:1.6;text-align:right"><li>تنفيذ تعديلات اللقطات</li><li>التنسيق النهائي لأبعاد الرفع</li><li>تصميم الواجهة بإطارات رخامية وشاشة CNC</li></ul>
-</div>
-<img src="img/model3d.jpg" alt="3D" style="width:760px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="facade_ar" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#e8dfd0;color:#1f1d1a;padding:96px 128px;display:flex;flex-direction:row-reverse;gap:96px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:60px;font-weight:800;text-align:right">الواجهة الرئيسية — وفق المخطط</h2>
-<p style="font-size:28px;color:#5b5348;text-align:right">مسقط أمامي من النموذج ثلاثي الأبعاد؛ جميع الفتحات والأبعاد من المخطط</p>
-<ul style="font-size:30px;line-height:1.6;text-align:right"><li>إطار رخامي للشرفات حتى أعلى غرفة الدرج مع شق إضاءة غائر</li><li>قضبان برونزية أمام الدرج بلا زجاج من ٢٤٠ حتى السطح وتنعطف فوق غرفة الدرج</li><li>اللوح العلوي: شرائح رخام ١٥ سم بارزة وغائرة بالتناوب</li><li>إطار بارز للطابق الأرضي، رخام أفقي بفواصل ١ سم، بوابة خشبية ٢٨٠</li><li>غرفة الدرج ٢٧٠ والستارة ١٥٠</li></ul>
-<p style="font-size:24px;color:#8a6a3a;text-align:right">بروز الإطارات وسماكة الرخام قيد التأكيد</p>
-</div>
-<img src="img/facade_elev.png" alt="facade" style="width:450px;height:888px;object-fit:contain">
-</section>
-
-<section id="cover_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#1f1d1a;color:#f6f2ea;padding:0;display:flex;flex-direction:row">
-<div style="width:900px;display:flex;flex-direction:column;justify-content:center;gap:32px;padding:128px">
-<p style="font-size:28px;color:#c9a46d;font-weight:700;text-align:left">ArchTverse · Karbala</p>
-<h1 style="font-size:88px;font-weight:800;line-height:1.15;text-align:left">House 5.70 × 12.84</h1>
-<p style="font-size:36px;line-height:1.5;color:#e8dfd0;text-align:left">Plans, spaces and interior renders<br>Ground floor + two typical floors</p>
-</div>
-<img src="img/model3d.jpg" alt="3D" style="width:1020px;height:1080px;object-fit:cover">
-</section>
-
-<section id="facts_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:128px;display:flex;flex-direction:column;gap:56px">
-<h2 style="font-size:64px;font-weight:800;text-align:left">Project at a glance</h2>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px"><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:left">5.70 × 12.84</p><p style="font-size:28px;color:#5b5348;text-align:left">Plot, outside to outside (m)</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:left">3 floors</p><p style="font-size:28px;color:#5b5348;text-align:left">Ground + typical first and second</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:left">300 + 20</p><p style="font-size:28px;color:#5b5348;text-align:left">Floor to ceiling + slab (cm)</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:left">21 cm</p><p style="font-size:28px;color:#5b5348;text-align:left">Wall thickness (measured 20–22)</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:left">1 facade</p><p style="font-size:28px;color:#5b5348;text-align:left">Front only; left side has no neighbour</p></div><div style="background:#ffffff;border:1px solid #e3dccf;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px"><p style="font-size:60px;font-weight:800;color:#8a6a3a;text-align:left">17 steps</p><p style="font-size:28px;color:#5b5348;text-align:left">Marble U-stair, up to the roof</p></div></div>
-</section>
-
-<section id="plan_g_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#e8dfd0;color:#1f1d1a;padding:96px 128px;display:flex;flex-direction:row;gap:80px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:60px;font-weight:800;text-align:left">Ground floor plan</h2>
-<ul style="font-size:30px;line-height:1.6;text-align:left"><li>Semi-open entrance: metal gate and two side-by-side doors (corridor, living)</li><li>Marble stair along the facade with a continuous CNC screen to the roof</li><li>WC under the stair, door 90 × 200</li><li>102 cm corridor turning into the living room at its end</li><li>Kitchen, WC 130 × 198 and light well 130 × 94 at the back</li></ul>
-<p style="font-size:24px;color:#5b5348;text-align:left">Orange letters = render camera positions</p>
-</div>
-<img src="img/pres_plan_g.jpg" alt="Ground floor plan" style="width:520px;height:888px;object-fit:contain;background:#faf8f4;border-radius:16px">
-</section>
-
-<section id="plan_1_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#e8dfd0;color:#1f1d1a;padding:96px 128px;display:flex;flex-direction:row;gap:80px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:60px;font-weight:800;text-align:left">First & second floor plan (typical)</h2>
-<ul style="font-size:30px;line-height:1.6;text-align:left"><li>Semi-open balcony 264 × 221, 110 cm glass railing</li><li>2 m living-room window onto the stairwell and CNC</li><li>Living room with the TV on the party wall</li><li>L-shaped kitchen, ceramic up to the ceiling</li><li>All doors 250 high; interior windows from 90 to the ceiling</li></ul>
-<p style="font-size:24px;color:#5b5348;text-align:left">Orange letters = render camera positions</p>
-</div>
-<img src="img/pres_plan_1.jpg" alt="First & second floor plan (typical)" style="width:520px;height:888px;object-fit:contain;background:#faf8f4;border-radius:16px">
-</section>
-
-<section id="lang_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#1f1d1a;color:#f6f2ea;padding:128px;display:flex;flex-direction:column;gap:56px">
-<h2 style="font-size:60px;font-weight:800;text-align:left">Design language: warm neoclassical</h2>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px"><div style="border:1px solid #4a443c;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:16px"><h3 style="font-size:36px;font-weight:700;color:#c9a46d;text-align:left">Interiors</h3><p style="font-size:28px;line-height:1.6;color:#e8dfd0;text-align:left">Warm white and greige walls, slim mouldings on feature walls only, 60 × 60 marble-look porcelain floors</p></div><div style="border:1px solid #4a443c;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:16px"><h3 style="font-size:36px;font-weight:700;color:#c9a46d;text-align:left">Ceilings</h3><p style="font-size:28px;line-height:1.6;color:#e8dfd0;text-align:left">Living: recessed tray ceiling with cornice and hidden light. Kitchen: simple ceiling with a dividing bulkhead. WC: 270</p></div><div style="border:1px solid #4a443c;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:16px"><h3 style="font-size:36px;font-weight:700;color:#c9a46d;text-align:left">Semi-open spaces</h3><p style="font-size:28px;line-height:1.6;color:#e8dfd0;text-align:left">Entrance, stair and balcony: travertine, no mouldings, dark-bronze metal, outdoor wall lights</p></div></div>
-</section>
-
-<section id="vA_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:left">View A · First floor</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:left">Living room</h2>
-<p style="font-size:28px;color:#5b5348;text-align:left">From the kitchen toward the front</p>
-<img src="img/pres_key_A.jpg" alt="A" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:left"><li>TV on the party wall, no openings</li><li>200 cm window onto the stairwell and CNC</li><li>Entrance door 100 × 250, 191 opening to the corridor</li></ul>
-</div>
-<img src="img/r_A.jpg" alt="A" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vB_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:left">View B · First floor</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:left">Living & kitchen</h2>
-<p style="font-size:28px;color:#5b5348;text-align:left">From the entrance toward the kitchen</p>
-<img src="img/pres_key_B.jpg" alt="B" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:left"><li>Kitchen on the back and right walls, ceramic to the ceiling</li><li>Left: corridor opening, WC door, light-well window</li><li>TV wall on the right</li></ul>
-</div>
-<img src="img/r_B.jpg" alt="B" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vC_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:left">View C · First floor</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:left">Corridor</h2>
-<p style="font-size:28px;color:#5b5348;text-align:left">102 × 685 cm</p>
-<img src="img/pres_key_C.jpg" alt="C" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:left"><li>Two closed walls with matching mouldings</li><li>Closed end; 191 turn into the living room on the right</li><li>Hidden cove light along both ceiling edges</li></ul>
-</div>
-<img src="img/r_C.jpg" alt="C" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vD_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:left">View D · First floor</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:left">WC</h2>
-<p style="font-size:28px;color:#5b5348;text-align:left">130 × 198, false ceiling 270</p>
-<img src="img/pres_key_D.jpg" alt="D" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:left"><li>Ceramic to the ceiling with a stone accent wall</li><li>50 × 60 window, sill 195, onto the light well</li><li>Wall-hung WC and walnut vanity</li></ul>
-</div>
-<img src="img/r_D.jpg" alt="D" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vE_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:left">View E · First floor</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:left">Balcony / pre-entry</h2>
-<p style="font-size:28px;color:#5b5348;text-align:left">Semi-open, 264 × 221</p>
-<img src="img/pres_key_E.jpg" alt="E" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:left"><li>Two doors: corridor 90 × 250, living 100 × 250</li><li>110 cm glass railing to the street</li><li>Travertine wall, outdoor lantern, planting</li></ul>
-</div>
-<img src="img/r_E.jpg" alt="E" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vF_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:left">View F · Ground floor</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:left">Stair & CNC</h2>
-<p style="font-size:28px;color:#5b5348;text-align:left">Semi-open entrance space</p>
-<img src="img/pres_key_F.jpg" alt="F" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:left"><li>Bronze CNC, no glass, from 240 up to the roof</li><li>Marble stair, one balustrade on the open side</li><li>WC under the stair 90 × 200, light oak</li></ul>
-</div>
-<img src="img/r_F.jpg" alt="F" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="vG_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#f6f2ea;color:#1f1d1a;padding:96px;display:flex;flex-direction:row;gap:56px;align-items:stretch">
-<div style="width:440px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;color:#8a6a3a;font-weight:700;text-align:left">View G · Ground floor</p>
-<h2 style="font-size:52px;font-weight:800;line-height:1.2;text-align:left">Entrance</h2>
-<p style="font-size:28px;color:#5b5348;text-align:left">Two side-by-side doors</p>
-<img src="img/pres_key_G.jpg" alt="G" style="width:440px;height:260px;object-fit:contain;background:#ffffff;border-radius:12px">
-<ul style="font-size:26px;line-height:1.5;text-align:left"><li>Corridor and living doors in walnut</li><li>120 window to the living room under the return flight</li><li>Travertine walls, WC under the stair</li></ul>
-</div>
-<img src="img/r_G.jpg" alt="G" style="width:1328px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="model_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#1f1d1a;color:#f6f2ea;padding:96px 128px;display:flex;flex-direction:row;gap:80px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:60px;font-weight:800;text-align:left">3D model & next step</h2>
-<p style="font-size:30px;line-height:1.6;color:#e8dfd0;text-align:left">A massing model built from these plans; the interactive walkthrough shows every floor from inside.</p>
-<ul style="font-size:30px;line-height:1.6;text-align:left"><li>Apply the render corrections</li><li>Final reconciliation of surveyed dimensions</li><li>Facade design with marble frames and CNC</li></ul>
-</div>
-<img src="img/model3d.jpg" alt="3D" style="width:760px;height:888px;object-fit:cover;border-radius:16px">
-</section>
-
-<section id="facade_en" data-transition="fade" style="font-family:Vazirmatn, Tahoma, sans-serif;background:#e8dfd0;color:#1f1d1a;padding:96px 128px;display:flex;flex-direction:row;gap:96px;align-items:center">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-size:60px;font-weight:800;text-align:left">Main facade — from the plan</h2>
-<p style="font-size:28px;color:#5b5348;text-align:left">Front elevation from the 3D model; all openings and dimensions from the plan</p>
-<ul style="font-size:30px;line-height:1.6;text-align:left"><li>Marble balcony frame up to the stair-head, with a recessed LED groove</li><li>Bronze bars in front of the stair, no glass, from 240 to the roof, turning back over the stair-head</li><li>Upper panel: 15 cm marble strips, alternately set in and out</li><li>Projecting ground-floor frame, horizontal marble with 1 cm joints, 280 wooden gate</li><li>Stair-head 270, parapet 150</li></ul>
-<p style="font-size:24px;color:#8a6a3a;text-align:left">Frame projection and stone thickness to be confirmed</p>
-</div>
-<img src="img/facade_elev.png" alt="facade" style="width:450px;height:888px;object-fit:contain">
-</section>
-</div>
-<div id="nav"><button id="pv">‹</button><span id="ct"></span><button id="nx">›</button><a href="#slide-1">زبان / Language</a><a href="model3d.html">مدل 3D</a></div>
 <script>
-const s=[...document.querySelectorAll('#stage>section')],st=document.getElementById('stage');let i=0;
-function fit(){const k=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform=`translate(-50%,-50%) scale(${k})`}
-function go(n){i=Math.max(0,Math.min(s.length-1,n));s.forEach((e,j)=>e.classList.toggle('on',j==i));document.getElementById('ct').textContent=(i+1)+' / '+s.length;history.replaceState(null,'','#slide-'+(i+1))}
-function fromHash(){const m=location.hash.match(/slide-(\d+)/);go(m?m[1]-1:0)}
-addEventListener('hashchange',fromHash);addEventListener('resize',fit);
-addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))go(i+1);if(['ArrowLeft','PageUp'].includes(e.key))go(i-1)});
-pv.onclick=()=>go(i-1);nx.onclick=()=>go(i+1);
-let x0=null;addEventListener('touchstart',e=>x0=e.touches[0].clientX);addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)go(i+(dx<0?1:-1));x0=null});
-document.querySelectorAll('a[href^="#slide-"]').forEach(a=>a.onclick=e=>{e.preventDefault();go(+a.getAttribute('href').split('-')[1]-1)});
-fit();fromHash();
-</script></body></html>
+const IMG='img/';
+const R={A:'r_A.jpg',B:'r_B.jpg',C:'r_C.jpg',D:'r_D.jpg',E:'r_E.jpg',F:'r_F.jpg',G:'r_G.jpg'};
+const FL={A:'1',B:'1',C:'1',D:'1',E:'1',F:'g',G:'g'};
+const TX={
+fa:{dir:'rtl',name:'فارسی',brand:'ArchTverse · کربلا',title:'خانه ۵٫۷۰ × ۱۲٫۸۴',sub:'پلان‌ها، فضاهای داخلی و نما — همکف و دو طبقهٔ تیپ',start:'شروع ارائه',see3d:'مدل سه‌بعدی',
+ nav:{facts:'در یک نگاه',plans:'پلان‌ها',design:'زبان طراحی',views:'فضاهای داخلی',facade:'نما',model:'مدل سه‌بعدی'},
+ facts_t:'پروژه در یک نگاه',facts:[['۵٫۷۰ × ۱۲٫۸۴','ابعاد زمین بیرون‌به‌بیرون (متر)'],['۳ طبقه','همکف + طبقهٔ اول و دوم تیپ'],['۳۰۰ + ۲۰','کف تا زیر سقف + بتن سقف (سانتی‌متر)'],['۲۱ سانت','ضخامت دیوارها (برداشت ۲۰ تا ۲۲)'],['۱ نما','فقط جبههٔ جلو؛ سمت چپ بدون همسایه'],['۱۷ پله','پلهٔ U شکل مرمر تا بام، با خرپشته']],
+ plans_t:'پلان‌ها',plans_s:'طبقه را انتخاب کنید؛ برای بزرگ‌نمایی روی پلان بزنید.',pg:'همکف',p1:'طبقهٔ اول و دوم (تیپ)',
+ pgL:['ورودی نیمه‌باز با درِ چوبی و دو درِ کنار هم: راهرو و سالن','پلهٔ مرمر کنار نما با میله‌های برنزی یکسره تا بام','سرویس زیر پله','راهرو ۱۰۲ سانتی که در انتها به سالن می‌چرخد','آشپزخانه، سرویس ۱۳۰ × ۱۹۸ و نورگیر ۱۳۰ × ۹۴ در عقب'],
+ p1L:['بالکن / پیش‌ورودی نیمه‌باز ۲۶۴ × ۲۲۱ با نردهٔ شیشه‌ای ۱۱۰','پنجرهٔ ۲ متری سالن رو به چاه پله','سالن با دیوار تلویزیون روی دیوار همسایه','آشپزخانهٔ L شکل با سرامیک تا سقف','درها ۲۸۰؛ پنجره‌های داخلی از ۹۰ تا سقف'],
+ legend:'حروف نارنجی = جای دوربین هر فضا؛ روی حرف‌ها در بخش فضاهای داخلی بزنید.',viewsOn:'فضاهای این طبقه:',
+ design_t:'زبان طراحی: نئوکلاسیک گرم',design:[['فضاهای داخلی','دیوار سفید گرم و گریج، قاب‌بندی ظریف فقط روی دیوارهای تأکیدی، کف سرامیک طرح مرمر ۶۰ × ۶۰'],['سقف‌ها','سالن: سقف کاذب مستطیلی با گلویی و نور مخفی. آشپزخانه: سقف ساده با باکس جداکننده. سرویس: ۲۷۰'],['فضاهای نیمه‌باز','ورودی، پله و بالکن: سنگ، فلز برنزی تیره، سقف چوبی و نور توکار']],
+ views_t:'فضاهای داخلی',views_s:'حرف هر فضا را بزنید یا تصویر را بکشید.',view:'دید',fl:{'1':'طبقهٔ اول','g':'همکف'},
+ V:{A:['سالن','از آشپزخانه رو به جلو',['تلویزیون روی دیوار همسایه، بدون بازشو','پنجرهٔ ۲۰۰ سانتی رو به چاه پله','درِ ورودی ۱۰۰ × ۲۸۰ و دهانهٔ ۱۹۱ به راهرو']],B:['سالن و آشپزخانه','از ورودی رو به آشپزخانه',['آشپزخانه روی دیوار پشت و راست، سرامیک تا سقف','چپ: دهانهٔ راهرو، درِ سرویس، پنجرهٔ نورگیر','دیوار تلویزیون سمت راست']],C:['راهرو','۱۰۲ × ۶۸۵ سانت',['دو دیوار بسته با قاب‌بندی یکسان','انتهای بسته؛ چرخش ۱۹۱ به سالن','نور مخفی دو طرف سقف']],D:['سرویس بهداشتی','۱۳۰ × ۱۹۸، سقف کاذب ۲۷۰',['سرامیک تا سقف با دیوار تأکیدی سنگی','پنجرهٔ ۵۰ × ۶۰ با کف ۱۹۵ رو به نورگیر','توالت وال‌هنگ و روشویی گردو']],E:['بالکن / پیش‌ورودی','نیمه‌باز، ۲۶۴ × ۲۲۱',['دو در: راهرو ۹۰ × ۲۸۰ و سالن ۱۰۰ × ۲۸۰','نردهٔ شیشه‌ای ۱۱۰ رو به خیابان','دیوار سنگی، چراغ بیرونی، گیاه']],F:['پله و میله‌های نما','فضای نیمه‌باز ورودی',['میله‌های برنزی بدون شیشه، از ۲۴۰ تا بام','پلهٔ مرمر با دست‌انداز لوله‌ای','سرویس زیر پله']],G:['ورودی','دو درِ کنار هم',['درِ راهرو و درِ سالن، گردو','پنجرهٔ ۱۲۰ رو به سالن زیر بازوی برگشت','دیوار سنگی، سرویس زیر پله']]},
+ facade_t:'نمای اصلی',facade_s:'همهٔ دهانه‌ها و ابعاد از پلان؛ بین نقشه و سه‌رخ جابه‌جا شوید.',elev:'نقشهٔ نما',persp:'سه‌رخ',
+ facade:['قاب سنگی بالکن‌ها تا بالای خرپشته با شیار نوری فرورفته','میله‌های برنزی جلوی پله، بدون شیشه، از ۲۴۰ تا بام و برگشت روی خرپشته','پنل بالا: سنگ‌های ۱۵ سانتی، یکی در میان جلو و عقب','قاب همکف برجسته، سنگ افقی با بند ۱ سانتی، درِ ورودی چوبی ۲۸۰','خرپشته ۲۷۰ و جان‌پناه ۱۵۰'],facade_n:'بیرون‌زدگی قاب‌ها و ضخامت سنگ در دست تأیید است.',
+ model_t:'مدل سه‌بعدی',model_s:'بچرخانید، زوم کنید، طبقه‌ها را خاموش و روشن کنید؛ حالت «حجم + سایه» برای درک بهتر حجم.',load3d:'نمایش مدل سه‌بعدی',full:'تمام‌صفحه',
+ set:'تنظیمات',lang:'زبان',theme:'رنگ صفحه',dark:'تیره',light:'روشن',size:'اندازهٔ متن',close:'بستن',zoomhint:'برای زوم دو بار بزنید',foot:'طراحی: ArchTverse · ابعاد از برداشت کارگاه؛ ابعاد داخلی مبناست.'},
+ar:{dir:'rtl',name:'العربية',brand:'ArchTverse · كربلاء',title:'منزل ٥٫٧٠ × ١٢٫٨٤',sub:'المخططات والفراغات الداخلية والواجهة — أرضي وطابقان متكرران',start:'ابدأ العرض',see3d:'النموذج ثلاثي الأبعاد',
+ nav:{facts:'لمحة',plans:'المخططات',design:'لغة التصميم',views:'الفراغات',facade:'الواجهة',model:'النموذج'},
+ facts_t:'المشروع في لمحة',facts:[['٥٫٧٠ × ١٢٫٨٤','أبعاد الأرض من الخارج (متر)'],['٣ طوابق','أرضي + طابق أول وثانٍ متكرران'],['٣٠٠ + ٢٠','من الأرضية إلى السقف + سماكة السقف (سم)'],['٢١ سم','سماكة الجدران (قياس ٢٠–٢٢)'],['واجهة واحدة','الأمامية فقط؛ الجهة اليسرى بلا جار'],['١٧ درجة','درج رخامي على شكل U حتى السطح مع غرفة درج']],
+ plans_t:'المخططات',plans_s:'اختر الطابق؛ اضغط على المخطط للتكبير.',pg:'الطابق الأرضي',p1:'الطابق الأول والثاني (متكرر)',
+ pgL:['مدخل شبه مفتوح ببوابة خشبية وبابين متجاورين: الممر والصالة','درج رخامي بجانب الواجهة مع قضبان برونزية حتى السطح','حمّام تحت الدرج','ممر بعرض ١٠٢ سم ينعطف في نهايته نحو الصالة','المطبخ والحمّام ١٣٠ × ١٩٨ والمنور ١٣٠ × ٩٤ في الخلف'],
+ p1L:['شرفة / ما قبل المدخل ٢٦٤ × ٢٢١ بدرابزين زجاجي ١١٠','نافذة الصالة بعرض ٢ م على بئر الدرج','الصالة مع جدار التلفاز على الجدار المشترك','مطبخ على شكل L بسيراميك حتى السقف','الأبواب بارتفاع ٢٨٠؛ النوافذ الداخلية من ٩٠ حتى السقف'],
+ legend:'الحروف البرتقالية = مواقع الكاميرات؛ اضغط عليها في قسم الفراغات.',viewsOn:'فراغات هذا الطابق:',
+ design_t:'لغة التصميم: نيوكلاسيك دافئ',design:[['الفراغات الداخلية','جدران أبيض دافئ ورمادي بيج، كرانيش رفيعة على الجدران المميزة فقط، أرضيات سيراميك بنقشة رخام ٦٠ × ٦٠'],['الأسقف','الصالة: سقف مستعار بكورنيش وإضاءة مخفية. المطبخ: سقف بسيط مع بوكس فاصل. الحمّام: ٢٧٠'],['الفراغات شبه المفتوحة','المدخل والدرج والشرفة: حجر، معدن برونزي داكن، سقف خشبي وإنارة مدمجة']],
+ views_t:'الفراغات الداخلية',views_s:'اضغط على حرف الفراغ أو اسحب الصورة.',view:'اللقطة',fl:{'1':'الطابق الأول','g':'الطابق الأرضي'},
+ V:{A:['الصالة','من المطبخ باتجاه الأمام',['التلفاز على الجدار المشترك بلا فتحات','نافذة بعرض ٢٠٠ سم على بئر الدرج','باب المدخل ١٠٠ × ٢٨٠ وفتحة ١٩١ إلى الممر']],B:['الصالة والمطبخ','من المدخل باتجاه المطبخ',['المطبخ على الجدارين الخلفي والأيمن','يسارًا: فتحة الممر، باب الحمّام، نافذة المنور','جدار التلفاز على اليمين']],C:['الممر','١٠٢ × ٦٨٥ سم',['جداران مغلقان بكرانيش متطابقة','نهاية مغلقة؛ انعطاف ١٩١ نحو الصالة','إضاءة مخفية على جانبي السقف']],D:['الحمّام','١٣٠ × ١٩٨، سقف مستعار ٢٧٠',['سيراميك حتى السقف مع جدار حجري مميز','نافذة ٥٠ × ٦٠ بارتفاع جلسة ١٩٥','مرحاض معلق ومغسلة من خشب الجوز']],E:['الشرفة / ما قبل المدخل','شبه مفتوحة، ٢٦٤ × ٢٢١',['بابان: الممر ٩٠ × ٢٨٠ والصالة ١٠٠ × ٢٨٠','درابزين زجاجي ١١٠ باتجاه الشارع','جدار حجري، إنارة خارجية، نباتات']],F:['الدرج وقضبان الواجهة','فراغ المدخل شبه المفتوح',['قضبان برونزية بلا زجاج من ٢٤٠ حتى السطح','درج رخامي بدرابزين أنبوبي','حمّام تحت الدرج']],G:['المدخل','بابان متجاوران',['باب الممر وباب الصالة، خشب الجوز','نافذة ١٢٠ على الصالة','جدار حجري، حمّام تحت الدرج']]},
+ facade_t:'الواجهة الرئيسية',facade_s:'جميع الفتحات والأبعاد من المخطط؛ بدّل بين المسقط والمنظور.',elev:'مسقط الواجهة',persp:'منظور',
+ facade:['إطار رخامي للشرفات حتى أعلى غرفة الدرج مع شق إضاءة غائر','قضبان برونزية أمام الدرج بلا زجاج من ٢٤٠ حتى السطح','اللوح العلوي: شرائح رخام ١٥ سم بارزة وغائرة بالتناوب','إطار بارز للطابق الأرضي، رخام أفقي بفواصل ١ سم، بوابة خشبية ٢٨٠','غرفة الدرج ٢٧٠ والستارة ١٥٠'],facade_n:'بروز الإطارات وسماكة الرخام قيد التأكيد.',
+ model_t:'النموذج ثلاثي الأبعاد',model_s:'دوّر، كبّر، أظهر وأخفِ الطوابق؛ وضع «كتلة + ظلال» لفهم الكتلة بشكل أفضل.',load3d:'عرض النموذج ثلاثي الأبعاد',full:'ملء الشاشة',
+ set:'الإعدادات',lang:'اللغة',theme:'لون الصفحة',dark:'داكن',light:'فاتح',size:'حجم النص',close:'إغلاق',zoomhint:'اضغط مرتين للتكبير',foot:'تصميم: ArchTverse · الأبعاد من الرفع الميداني؛ الأبعاد الداخلية هي المرجع.'},
+en:{dir:'ltr',name:'English',brand:'ArchTverse · Karbala',title:'House 5.70 × 12.84',sub:'Plans, interiors and facade — ground floor + two typical floors',start:'Start',see3d:'3D model',
+ nav:{facts:'Overview',plans:'Plans',design:'Design',views:'Interiors',facade:'Facade',model:'3D'},
+ facts_t:'Project at a glance',facts:[['5.70 × 12.84','Plot, outside to outside (m)'],['3 floors','Ground + typical first and second'],['300 + 20','Floor to ceiling + slab (cm)'],['21 cm','Wall thickness (measured 20–22)'],['1 facade','Front only; left side has no neighbour'],['17 steps','Marble U-stair to the roof, with stair-head']],
+ plans_t:'Plans',plans_s:'Pick a floor; tap the plan to zoom.',pg:'Ground floor',p1:'First & second floor (typical)',
+ pgL:['Semi-open entrance: wooden gate and two side-by-side doors (corridor, living)','Marble stair along the facade with bronze bars up to the roof','WC under the stair','102 cm corridor turning into the living room at its end','Kitchen, WC 130 × 198 and light well 130 × 94 at the back'],
+ p1L:['Balcony / pre-entry 264 × 221, 110 glass railing','2 m living-room window onto the stairwell','Living room with the TV on the party wall','L-shaped kitchen, ceramic to the ceiling','Doors 280 high; interior windows from 90 to the ceiling'],
+ legend:'Orange letters = camera positions; tap them in Interiors.',viewsOn:'Spaces on this floor:',
+ design_t:'Design language: warm neoclassical',design:[['Interiors','Warm white and greige walls, slim mouldings on feature walls only, 60 × 60 marble-look porcelain floors'],['Ceilings','Living: tray ceiling with cornice and hidden light. Kitchen: simple ceiling with a bulkhead. WC: 270'],['Semi-open spaces','Entrance, stair and balcony: stone, dark-bronze metal, wood soffits with recessed lights']],
+ views_t:'Interiors',views_s:'Tap a letter or swipe the image.',view:'View',fl:{'1':'First floor','g':'Ground floor'},
+ V:{A:['Living room','From the kitchen toward the front',['TV on the party wall, no openings','200 cm window onto the stairwell','Entrance door 100 × 280, 191 opening to the corridor']],B:['Living & kitchen','From the entrance toward the kitchen',['Kitchen on the back and right walls','Left: corridor opening, WC door, light-well window','TV wall on the right']],C:['Corridor','102 × 685 cm',['Two closed walls with matching mouldings','Closed end; 191 turn into the living room','Hidden cove light along both ceiling edges']],D:['WC','130 × 198, false ceiling 270',['Ceramic to the ceiling with a stone accent wall','50 × 60 window, sill 195, onto the light well','Wall-hung WC and walnut vanity']],E:['Balcony / pre-entry','Semi-open, 264 × 221',['Two doors: corridor 90 × 280, living 100 × 280','110 cm glass railing to the street','Stone wall, outdoor lantern, planting']],F:['Stair & facade bars','Semi-open entrance space',['Bronze bars, no glass, from 240 up to the roof','Marble stair with a tubular handrail','WC under the stair']],G:['Entrance','Two side-by-side doors',['Corridor and living doors in walnut','120 window to the living room','Stone walls, WC under the stair']]},
+ facade_t:'Main facade',facade_s:'All openings and dimensions from the plan; switch between elevation and 3/4 view.',elev:'Elevation',persp:'3/4 view',
+ facade:['Marble balcony frame up to the stair-head, with a recessed LED groove','Bronze bars in front of the stair, no glass, from 240 to the roof','Upper panel: 15 cm marble strips, alternately set in and out','Projecting ground-floor frame, horizontal marble with 1 cm joints, 280 wooden gate','Stair-head 270, parapet 150'],facade_n:'Frame projection and stone thickness to be confirmed.',
+ model_t:'3D model',model_s:'Orbit, zoom, switch floors on and off; use “Volume + shadow” to read the massing.',load3d:'Show the 3D model',full:'Full screen',
+ set:'Settings',lang:'Language',theme:'Theme',dark:'Dark',light:'Light',size:'Text size',close:'Close',zoomhint:'Double-tap to zoom',foot:'Design: ArchTverse · Dimensions from the site survey; internal dimensions govern.'}};
+
+const store={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+const Q=new URLSearchParams(location.search);
+let L=Q.get('lang')||store.get('k570_lang'); let theme=store.get('k570_theme')||'dark'; let fs=+(store.get('k570_fs')||16);
+let plan='g', view='A', fview='persp';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s);
+
+function render(){
+  const t=TX[L]; document.documentElement.lang=L; document.documentElement.dir=t.dir;
+  document.body.classList.toggle('light',theme==='light'); document.documentElement.style.setProperty('--fs',fs+'px');
+  $('#nav').innerHTML=Object.entries(t.nav).map(([k,v])=>`<a href="#${k}" data-k="${k}">${v}</a>`).join('');
+  const V=t.V[view];
+  const planViews=Object.keys(FL).filter(k=>FL[k]===(plan==='g'?'g':'1'));
+  $('#main').innerHTML=`
+  <section id="cover"><div class="hero">
+    <div class="txt wrap"><div class="eyebrow">${t.brand}</div><h1>${t.title}</h1><p class="sub" style="margin:0">${t.sub}</p>
+      <div class="cta"><a class="btn" href="#facts">${t.start}</a><a class="btn ghost" href="#model">${t.see3d}</a></div></div>
+    <div class="img" style="background-image:url(${IMG}model3d.jpg)" role="img"></div></div></section>
+  <section id="facts"><div class="wrap"><h2>${t.facts_t}</h2><p class="sub"></p>
+    <div class="grid facts">${t.facts.map(([a,b])=>`<div class="card fact"><b>${a}</b><span>${b}</span></div>`).join('')}</div></div></section>
+  <section id="plans"><div class="wrap"><h2>${t.plans_t}</h2><p class="sub">${t.plans_s}</p>
+    <div class="tabs"><button class="chip ${plan==='g'?'on':''}" data-plan="g">${t.pg}</button><button class="chip ${plan==='1'?'on':''}" data-plan="1">${t.p1}</button></div>
+    <div class="grid two"><div class="pic" data-zoom="${IMG}pres_plan_${plan}.jpg" style="max-height:78svh"><img src="${IMG}pres_plan_${plan}.jpg" alt="" style="max-height:78svh;margin:auto"><span class="zoom">⤢</span></div>
+      <div><ul class="b">${(plan==='g'?t.pgL:t.p1L).map(x=>`<li>${x}</li>`).join('')}</ul>
+      <p class="sub" style="margin:14px 0 8px">${t.legend}</p><div class="tabs">${t.viewsOn} ${planViews.map(k=>`<button class="chip" data-goview="${k}">${k} · ${t.V[k][0]}</button>`).join('')}</div></div></div></div></section>
+  <section id="design"><div class="wrap"><h2>${t.design_t}</h2><p class="sub"></p>
+    <div class="grid g3">${t.design.map(([a,b])=>`<div class="card"><h3 style="color:var(--acc);margin-bottom:6px">${a}</h3><p>${b}</p></div>`).join('')}</div></div></section>
+  <section id="views"><div class="wrap"><h2>${t.views_t}</h2><p class="sub">${t.views_s}</p>
+    <div class="letters">${Object.keys(R).map(k=>`<button data-view="${k}" class="${k===view?'on':''}">${k}</button>`).join('')}</div>
+    <div class="vmain"><button class="arrow p" data-step="-1">${t.dir==='rtl'?'›':'‹'}</button><div class="pic" id="vpic" data-zoom="${IMG}${R[view]}"><img src="${IMG}${R[view]}" alt="${V[0]}"><span class="zoom">⤢</span></div><button class="arrow n" data-step="1">${t.dir==='rtl'?'‹':'›'}</button></div>
+    <div class="vinfo" style="margin-top:16px"><div><div class="eyebrow">${t.view} ${view} · ${t.fl[FL[view]]}</div><h3 style="font-size:1.5em;line-height:1.3">${V[0]}</h3><p class="sub" style="margin-bottom:10px">${V[1]}</p><ul class="b">${V[2].map(x=>`<li>${x}</li>`).join('')}</ul></div>
+      <div class="pic key" data-zoom="${IMG}pres_key_${view}.jpg"><img src="${IMG}pres_key_${view}.jpg" alt=""></div></div></div></section>
+  <section id="facade"><div class="wrap"><h2>${t.facade_t}</h2><p class="sub">${t.facade_s}</p>
+    <div class="tabs"><button class="chip ${fview==='persp'?'on':''}" data-fview="persp">${t.persp}</button><button class="chip ${fview==='elev'?'on':''}" data-fview="elev">${t.elev}</button></div>
+    <div class="grid two"><div class="pic" data-zoom="${IMG}${fview==='elev'?'facade_elev.png':'model3d.jpg'}" style="max-height:80svh"><img src="${IMG}${fview==='elev'?'facade_elev.png':'model3d.jpg'}" alt="" style="max-height:80svh;margin:auto"><span class="zoom">⤢</span></div>
+      <div><ul class="b">${t.facade.map(x=>`<li>${x}</li>`).join('')}</ul><p class="sub" style="margin-top:12px;color:var(--acc)">${t.facade_n}</p></div></div></div></section>
+  <section id="model"><div class="wrap"><h2>${t.model_t}</h2><p class="sub">${t.model_s}</p>
+    <div class="frame3d" id="f3d" style="background-image:url(${IMG}model3d.jpg)"><div class="start"><button class="btn" id="go3d">${t.load3d}</button></div></div>
+    <div class="cta" style="margin-top:12px"><a class="btn ghost" href="model3d.html?lang=${L}">${t.full} ⤢</a></div></div></section>
+  <footer><div class="wrap">${t.foot}</div></footer>`;
+  $('#sheet').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><b>${t.set}</b><button class="ib" data-close>${t.close}</button></div>
+    <div class="srow"><span>${t.lang}</span><div class="seg">${Object.keys(TX).map(k=>`<button data-setlang="${k}" class="${k===L?'on':''}">${TX[k].name}</button>`).join('')}</div></div>
+    <div class="srow"><span>${t.theme}</span><div class="seg"><button data-theme="dark" class="${theme==='dark'?'on':''}">${t.dark}</button><button data-theme="light" class="${theme==='light'?'on':''}">${t.light}</button></div></div>
+    <div class="srow" style="border:0"><span>${t.size}</span><div class="seg"><button data-fs="-1">A−</button><button data-fs="1">A+</button></div></div>`;
+  $('#lb .hint').textContent=t.zoomhint;
+  spy();
+}
+function setLang(l){ L=l; store.set('k570_lang',l); $('#gate').classList.add('hide'); const y=scrollY; render(); scrollTo(0,y); }
+function stepView(d){ const ks=Object.keys(R); view=ks[(ks.indexOf(view)+d+ks.length)%ks.length]; const y=scrollY; render(); scrollTo(0,y); }
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-setlang],[data-plan],[data-view],[data-step],[data-goview],[data-fview],[data-theme],[data-fs],[data-close],[data-zoom],#setbtn,#go3d,#shade,#lb .x');
+  if(!b) return; const d=b.dataset, y=scrollY;
+  if(d.setlang) return setLang(d.setlang);
+  if(b.id==='setbtn'){ $('#sheet').classList.add('open'); $('#shade').classList.add('open'); return; }
+  if(d.close!==undefined||b.id==='shade'){ $('#sheet').classList.remove('open'); $('#shade').classList.remove('open'); return; }
+  if(b.matches('#lb .x')){ $('#lb').classList.remove('open','z'); return; }
+  if(b.id==='go3d'){ $('#f3d').innerHTML=`<iframe src="model3d.html?lang=${L}&embed=1" allow="fullscreen; xr-spatial-tracking" title="3D"></iframe>`; return; }
+  if(d.zoom){ const lb=$('#lb'); lb.querySelector('img').src=d.zoom; lb.classList.add('open'); return; }
+  if(d.plan) plan=d.plan; if(d.view) view=d.view; if(d.fview) fview=d.fview;
+  if(d.step) return stepView(+d.step);
+  if(d.theme){ theme=d.theme; store.set('k570_theme',theme); }
+  if(d.fs){ fs=Math.max(13,Math.min(22,fs+ +d.fs)); store.set('k570_fs',fs); }
+  if(d.goview){ view=d.goview; render(); $('#views').scrollIntoView(); return; }
+  render(); scrollTo(0,y); if(d.theme||d.fs){ $('#sheet').classList.add('open'); $('#shade').classList.add('open'); }
+});
+$('#lb img').addEventListener('dblclick',()=>$('#lb').classList.toggle('z'));
+// swipe on the interior image
+let sx=null; document.addEventListener('touchstart',e=>{ if(e.target.closest('#vpic')) sx=e.touches[0].clientX; },{passive:true});
+document.addEventListener('touchend',e=>{ if(sx===null) return; const dx=e.changedTouches[0].clientX-sx; sx=null; if(Math.abs(dx)>45){ const rtl=TX[L].dir==='rtl'; stepView((dx<0)!==rtl?1:-1); } });
+addEventListener('keydown',e=>{ if($('#lb').classList.contains('open')&&e.key==='Escape') $('#lb').classList.remove('open','z'); });
+// scroll-spy for the nav
+let io; function spy(){ io&&io.disconnect(); io=new IntersectionObserver(es=>es.forEach(x=>{ if(x.isIntersecting){ document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('on',a.dataset.k===x.target.id)); const a=document.querySelector(`.nav a[data-k="${x.target.id}"]`); a&&a.scrollIntoView({block:'nearest',inline:'center'}); } }),{rootMargin:'-45% 0px -50% 0px'}); document.querySelectorAll('main section[id]').forEach(s=>io.observe(s)); }
+if(TX[L]){ $('#gate').classList.add('hide'); } else { L='fa'; }
+if(Q.get('lang')) store.set('k570_lang',L);
+render();
+if(location.hash){ const el=document.querySelector(location.hash); el&&requestAnimationFrame(()=>el.scrollIntoView({behavior:'instant'})); }
+</script>
+</body>
+</html>
