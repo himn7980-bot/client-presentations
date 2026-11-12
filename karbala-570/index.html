@@ -84,6 +84,39 @@ ul.b{padding-inline-start:1.2em;display:grid;gap:6px}
 @media(min-width:760px){.frame3d{aspect-ratio:16/9}}
 .frame3d iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .frame3d .start{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#0006}
+/* interactive plan */
+.planbox{position:relative;aspect-ratio:650/1380;width:min(100%,calc(82svh * 650 / 1380));margin:auto;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#faf8f4}
+.planbox img,.planbox svg{position:absolute;inset:0;width:100%;height:100%}
+.planbox .rm{font:700 27px Vazirmatn,Tahoma,sans-serif;fill:#2b2b2b;text-anchor:middle}
+.planbox .rs{font:19px Vazirmatn,Tahoma,sans-serif;fill:#777;text-anchor:middle}
+.cam{cursor:pointer}
+.cam .cone{fill:#c2410c;fill-opacity:.28;stroke:#c2410c;stroke-width:2;animation:breathe 2.2s ease-in-out infinite alternate}
+.cam .sweep{transform-box:view-box;transform-origin:0 0;animation:sweep 3.6s ease-in-out infinite alternate}
+.cam .ring{fill:none;stroke:#c2410c;stroke-width:4;transform-box:fill-box;transform-origin:center;animation:ping 1.8s ease-out infinite}
+.cam .dot{fill:#c2410c;stroke:#fff;stroke-width:4}
+.cam text{font:800 20px Tahoma,sans-serif;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.cam:hover .cone,.cam:focus .cone{fill-opacity:.5}
+@keyframes ping{0%{transform:scale(1);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+@keyframes breathe{from{fill-opacity:.14}to{fill-opacity:.42}}
+@keyframes sweep{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+/* shot viewer */
+#shot{position:fixed;inset:0;z-index:65;background:#000;display:none;overflow:hidden}
+#shot.open{display:block}
+#shot .ph{position:absolute;inset:0;clip-path:circle(0% at var(--x) var(--y));transition:clip-path .75s cubic-bezier(.7,0,.2,1)}
+#shot.in .ph{clip-path:circle(150% at var(--x) var(--y))}
+#shot img{width:100%;height:100%;object-fit:contain;transform:scale(1.25);transition:transform 1.1s cubic-bezier(.2,.7,.2,1),opacity .35s}
+#shot.in img{transform:scale(1)}
+#shot .cap{position:absolute;left:0;right:0;bottom:0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));background:linear-gradient(transparent,#000c 40%);color:#fff;opacity:0;transform:translateY(12px);transition:.4s .45s}
+#shot.in .cap{opacity:1;transform:none}
+#shot .cap b{font-size:1.3em}#shot .cap span{color:#d6c7ae}
+#shot .x{position:absolute;top:calc(10px + env(safe-area-inset-top));inset-inline-end:10px;z-index:3;background:#000a;color:#fff;border:1px solid #666;border-radius:10px;padding:6px 12px}
+#shot .nv{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:44px;height:44px;border-radius:50%;background:#000a;color:#fff;border:0;font-size:24px}
+#shot .nv.p{inset-inline-start:8px}#shot .nv.n{inset-inline-end:8px}
+@media (orientation:portrait){#shot img{object-fit:cover}#shot.in img{animation:pan 14s ease-in-out 1s infinite alternate}}
+#shot.fit img{object-fit:contain;animation:none!important}
+@keyframes pan{from{object-position:50% 50%}25%{object-position:0% 50%}to{object-position:100% 50%}}
+#shot .hint2{position:absolute;top:calc(14px + env(safe-area-inset-top));inset-inline-start:12px;z-index:3;color:#ddd;font-size:12px;background:#0008;border-radius:8px;padding:4px 8px;opacity:0;transition:.4s .8s}#shot.in .hint2{opacity:1}
+@media (prefers-reduced-motion:reduce){#shot img{animation:none!important}.cam *{animation:none!important}#shot .ph,#shot img,#shot .cap{transition:none}}
 /* lightbox */
 #lb{position:fixed;inset:0;z-index:70;background:#000e;display:none;overflow:auto;touch-action:pan-x pan-y pinch-zoom}
 #lb.open{display:block}
@@ -116,55 +149,77 @@ footer{padding:28px 0 calc(28px + env(safe-area-inset-bottom));color:var(--mut);
 
 <div id="shade"></div>
 <div id="sheet" role="dialog"></div>
+<div id="shot"><div class="ph"><img alt=""></div><button class="x" data-shotclose>✕</button><div class="hint2"></div><button class="nv p" data-shotstep="-1"></button><button class="nv n" data-shotstep="1"></button><div class="cap"></div></div>
 <div id="lb"><button class="x">✕</button><img alt=""><div class="hint"></div></div>
 
 <script>
 const IMG='img/';
 const R={A:'r_A.jpg',B:'r_B.jpg',C:'r_C.jpg',D:'r_D.jpg',E:'r_E.jpg',F:'r_F.jpg',G:'r_G.jpg'};
 const FL={A:'1',B:'1',C:'1',D:'1',E:'1',F:'g',G:'g'};
+const CAM={A:[330,1200,330,300,74],B:[240,290,330,1240,74],C:[72,300,72,906,62],D:[95,932,75,1125,100],E:[280,10,60,221,96],F:[200,205,440,60,100],G:[60,28,200,230,100]};
+const ROOMS={g:[['entry',102,130],['corr',72,520],['liv',345,560],['kit',335,1085],['wc',86,1030],['well',86,1195],['stair',330,70],['wcs',482,120]],
+ '1':[['bal',102,150],['corr',72,520],['liv',345,560],['kit',335,1085],['wc',86,1030],['well',86,1195],['stair',420,70]]};
+const RSUB={corr:'102 × 685',wc:'130 × 198',well:'130 × 94',bal:'264 × 221'};
+const RN={fa:{entry:'ورودی نیمه‌باز',corr:'راهرو',liv:'سالن',kit:'آشپزخانه',wc:'سرویس',well:'نورگیر',stair:'پله',wcs:'سرویس زیر پله',bal:'بالکن / پیش‌ورودی',street:'خیابان / ورودی'},
+ ar:{entry:'مدخل شبه مفتوح',corr:'الممر',liv:'الصالة',kit:'المطبخ',wc:'الحمّام',well:'المنور',stair:'الدرج',wcs:'حمّام تحت الدرج',bal:'الشرفة / ما قبل المدخل',street:'الشارع / المدخل'},
+ en:{entry:'Semi-open entry',corr:'Corridor',liv:'Living',kit:'Kitchen',wc:'WC',well:'Light well',stair:'Stair',wcs:'WC under stair',bal:'Balcony / pre-entry',street:'Street / entrance'}};
+const PX=x=>x+40, PY=y=>1300-y;
+function planSVG(fl){
+  const t=TX[L], rn=RN[L]; let h='';
+  ROOMS[fl].forEach(([k,x,y])=>{ h+=`<text class="rm" x="${PX(x)}" y="${PY(y)}" direction="${t.dir}">${rn[k]}</text>`; if(RSUB[k]) h+=`<text class="rs" x="${PX(x)}" y="${PY(y)+26}">${RSUB[k]}</text>`; });
+  h+=`<text class="rs" x="${PX(285)}" y="${PY(-55)}" direction="${t.dir}">${rn.street} · 570</text>`;
+  Object.keys(CAM).filter(k=>FL[k]===fl).forEach(k=>{
+    const [cx,cy,lx,ly,fv]=CAM[k], a=Math.atan2(ly-cy,lx-cx), r=170, a1=a-fv*Math.PI/360, a2=a+fv*Math.PI/360;
+    const p=(q)=>`${(r*Math.cos(q)).toFixed(1)},${(-r*Math.sin(q)).toFixed(1)}`;
+    h+=`<g class="cam" data-cam="${k}" tabindex="0" role="button" aria-label="${k}" transform="translate(${PX(cx)},${PY(cy)})">
+      <g class="sweep"><path class="cone" d="M0,0 L${p(a1)} A${r},${r} 0 0,0 ${p(a2)} Z"/></g>
+      <circle class="ring" r="20"/><circle class="dot" r="20"/><text>${k}</text></g>`;
+  });
+  return `<div class="planbox"><img src="${IMG}plan_${fl}_clean.png" width="650" height="1380" alt=""><svg viewBox="0 0 650 1380">${h}</svg></div>`;
+}
 const TX={
 fa:{dir:'rtl',name:'فارسی',brand:'ArchTverse · کربلا',title:'خانه ۵٫۷۰ × ۱۲٫۸۴',sub:'پلان‌ها، فضاهای داخلی و نما — همکف و دو طبقهٔ تیپ',start:'شروع ارائه',see3d:'مدل سه‌بعدی',
  nav:{facts:'در یک نگاه',plans:'پلان‌ها',design:'زبان طراحی',views:'فضاهای داخلی',facade:'نما',model:'مدل سه‌بعدی'},
  facts_t:'پروژه در یک نگاه',facts:[['۵٫۷۰ × ۱۲٫۸۴','ابعاد زمین بیرون‌به‌بیرون (متر)'],['۳ طبقه','همکف + طبقهٔ اول و دوم تیپ'],['۳۰۰ + ۲۰','کف تا زیر سقف + بتن سقف (سانتی‌متر)'],['۲۱ سانت','ضخامت دیوارها (برداشت ۲۰ تا ۲۲)'],['۱ نما','فقط جبههٔ جلو؛ سمت چپ بدون همسایه'],['۱۷ پله','پلهٔ U شکل مرمر تا بام، با خرپشته']],
- plans_t:'پلان‌ها',plans_s:'طبقه را انتخاب کنید؛ برای بزرگ‌نمایی روی پلان بزنید.',pg:'همکف',p1:'طبقهٔ اول و دوم (تیپ)',
+ plans_t:'پلان‌ها',plans_s:'طبقه را انتخاب کنید و روی نقطه‌های دید بزنید.',pg:'همکف',p1:'طبقهٔ اول و دوم (تیپ)',
  pgL:['ورودی نیمه‌باز با درِ چوبی و دو درِ کنار هم: راهرو و سالن','پلهٔ مرمر کنار نما با میله‌های برنزی یکسره تا بام','سرویس زیر پله','راهرو ۱۰۲ سانتی که در انتها به سالن می‌چرخد','آشپزخانه، سرویس ۱۳۰ × ۱۹۸ و نورگیر ۱۳۰ × ۹۴ در عقب'],
  p1L:['بالکن / پیش‌ورودی نیمه‌باز ۲۶۴ × ۲۲۱ با نردهٔ شیشه‌ای ۱۱۰','پنجرهٔ ۲ متری سالن رو به چاه پله','سالن با دیوار تلویزیون روی دیوار همسایه','آشپزخانهٔ L شکل با سرامیک تا سقف','درها ۲۸۰؛ پنجره‌های داخلی از ۹۰ تا سقف'],
- legend:'حروف نارنجی = جای دوربین هر فضا؛ روی حرف‌ها در بخش فضاهای داخلی بزنید.',viewsOn:'فضاهای این طبقه:',
+ legend:'نقطه‌های چشمک‌زن جای دید هر فضاست و مخروط، جهت نگاه را نشان می‌دهد؛ روی نقطه بزنید تا وارد همان زاویه شوید.',viewsOn:'فضاهای این طبقه:',
  design_t:'زبان طراحی: نئوکلاسیک گرم',design:[['فضاهای داخلی','دیوار سفید گرم و گریج، قاب‌بندی ظریف فقط روی دیوارهای تأکیدی، کف سرامیک طرح مرمر ۶۰ × ۶۰'],['سقف‌ها','سالن: سقف کاذب مستطیلی با گلویی و نور مخفی. آشپزخانه: سقف ساده با باکس جداکننده. سرویس: ۲۷۰'],['فضاهای نیمه‌باز','ورودی، پله و بالکن: سنگ، فلز برنزی تیره، سقف چوبی و نور توکار']],
  views_t:'فضاهای داخلی',views_s:'حرف هر فضا را بزنید یا تصویر را بکشید.',view:'دید',fl:{'1':'طبقهٔ اول','g':'همکف'},
  V:{A:['سالن','از آشپزخانه رو به جلو',['تلویزیون روی دیوار همسایه، بدون بازشو','پنجرهٔ ۲۰۰ سانتی رو به چاه پله','درِ ورودی ۱۰۰ × ۲۸۰ و دهانهٔ ۱۹۱ به راهرو']],B:['سالن و آشپزخانه','از ورودی رو به آشپزخانه',['آشپزخانه روی دیوار پشت و راست، سرامیک تا سقف','چپ: دهانهٔ راهرو، درِ سرویس، پنجرهٔ نورگیر','دیوار تلویزیون سمت راست']],C:['راهرو','۱۰۲ × ۶۸۵ سانت',['دو دیوار بسته با قاب‌بندی یکسان','انتهای بسته؛ چرخش ۱۹۱ به سالن','نور مخفی دو طرف سقف']],D:['سرویس بهداشتی','۱۳۰ × ۱۹۸، سقف کاذب ۲۷۰',['سرامیک تا سقف با دیوار تأکیدی سنگی','پنجرهٔ ۵۰ × ۶۰ با کف ۱۹۵ رو به نورگیر','توالت وال‌هنگ و روشویی گردو']],E:['بالکن / پیش‌ورودی','نیمه‌باز، ۲۶۴ × ۲۲۱',['دو در: راهرو ۹۰ × ۲۸۰ و سالن ۱۰۰ × ۲۸۰','نردهٔ شیشه‌ای ۱۱۰ رو به خیابان','دیوار سنگی، چراغ بیرونی، گیاه']],F:['پله و میله‌های نما','فضای نیمه‌باز ورودی',['میله‌های برنزی بدون شیشه، از ۲۴۰ تا بام','پلهٔ مرمر با دست‌انداز لوله‌ای','سرویس زیر پله']],G:['ورودی','دو درِ کنار هم',['درِ راهرو و درِ سالن، گردو','پنجرهٔ ۱۲۰ رو به سالن زیر بازوی برگشت','دیوار سنگی، سرویس زیر پله']]},
  facade_t:'نمای اصلی',facade_s:'همهٔ دهانه‌ها و ابعاد از پلان؛ بین نقشه و سه‌رخ جابه‌جا شوید.',elev:'نقشهٔ نما',persp:'سه‌رخ',
  facade:['قاب سنگی بالکن‌ها تا بالای خرپشته با شیار نوری فرورفته','میله‌های برنزی جلوی پله، بدون شیشه، از ۲۴۰ تا بام و برگشت روی خرپشته','پنل بالا: سنگ‌های ۱۵ سانتی، یکی در میان جلو و عقب','قاب همکف برجسته، سنگ افقی با بند ۱ سانتی، درِ ورودی چوبی ۲۸۰','خرپشته ۲۷۰ و جان‌پناه ۱۵۰'],facade_n:'بیرون‌زدگی قاب‌ها و ضخامت سنگ در دست تأیید است.',
  model_t:'مدل سه‌بعدی',model_s:'بچرخانید، زوم کنید، طبقه‌ها را خاموش و روشن کنید؛ حالت «حجم + سایه» برای درک بهتر حجم.',load3d:'نمایش مدل سه‌بعدی',full:'تمام‌صفحه',
- set:'تنظیمات',lang:'زبان',theme:'رنگ صفحه',dark:'تیره',light:'روشن',size:'اندازهٔ متن',close:'بستن',zoomhint:'برای زوم دو بار بزنید',foot:'طراحی: ArchTverse · ابعاد از برداشت کارگاه؛ ابعاد داخلی مبناست.'},
+ set:'تنظیمات',lang:'زبان',theme:'رنگ صفحه',dark:'تیره',light:'روشن',size:'اندازهٔ متن',close:'بستن',zoomhint:'برای زوم دو بار بزنید',fitHint:'برای دیدن کل تصویر روی آن بزنید',foot:'طراحی: ArchTverse · ابعاد از برداشت کارگاه؛ ابعاد داخلی مبناست.'},
 ar:{dir:'rtl',name:'العربية',brand:'ArchTverse · كربلاء',title:'منزل ٥٫٧٠ × ١٢٫٨٤',sub:'المخططات والفراغات الداخلية والواجهة — أرضي وطابقان متكرران',start:'ابدأ العرض',see3d:'النموذج ثلاثي الأبعاد',
  nav:{facts:'لمحة',plans:'المخططات',design:'لغة التصميم',views:'الفراغات',facade:'الواجهة',model:'النموذج'},
  facts_t:'المشروع في لمحة',facts:[['٥٫٧٠ × ١٢٫٨٤','أبعاد الأرض من الخارج (متر)'],['٣ طوابق','أرضي + طابق أول وثانٍ متكرران'],['٣٠٠ + ٢٠','من الأرضية إلى السقف + سماكة السقف (سم)'],['٢١ سم','سماكة الجدران (قياس ٢٠–٢٢)'],['واجهة واحدة','الأمامية فقط؛ الجهة اليسرى بلا جار'],['١٧ درجة','درج رخامي على شكل U حتى السطح مع غرفة درج']],
- plans_t:'المخططات',plans_s:'اختر الطابق؛ اضغط على المخطط للتكبير.',pg:'الطابق الأرضي',p1:'الطابق الأول والثاني (متكرر)',
+ plans_t:'المخططات',plans_s:'اختر الطابق واضغط على نقاط اللقطات.',pg:'الطابق الأرضي',p1:'الطابق الأول والثاني (متكرر)',
  pgL:['مدخل شبه مفتوح ببوابة خشبية وبابين متجاورين: الممر والصالة','درج رخامي بجانب الواجهة مع قضبان برونزية حتى السطح','حمّام تحت الدرج','ممر بعرض ١٠٢ سم ينعطف في نهايته نحو الصالة','المطبخ والحمّام ١٣٠ × ١٩٨ والمنور ١٣٠ × ٩٤ في الخلف'],
  p1L:['شرفة / ما قبل المدخل ٢٦٤ × ٢٢١ بدرابزين زجاجي ١١٠','نافذة الصالة بعرض ٢ م على بئر الدرج','الصالة مع جدار التلفاز على الجدار المشترك','مطبخ على شكل L بسيراميك حتى السقف','الأبواب بارتفاع ٢٨٠؛ النوافذ الداخلية من ٩٠ حتى السقف'],
- legend:'الحروف البرتقالية = مواقع الكاميرات؛ اضغط عليها في قسم الفراغات.',viewsOn:'فراغات هذا الطابق:',
+ legend:'النقاط الوامضة هي مواقع اللقطات والمخروط يبيّن اتجاه النظر؛ اضغط على النقطة للدخول إلى تلك الزاوية.',viewsOn:'فراغات هذا الطابق:',
  design_t:'لغة التصميم: نيوكلاسيك دافئ',design:[['الفراغات الداخلية','جدران أبيض دافئ ورمادي بيج، كرانيش رفيعة على الجدران المميزة فقط، أرضيات سيراميك بنقشة رخام ٦٠ × ٦٠'],['الأسقف','الصالة: سقف مستعار بكورنيش وإضاءة مخفية. المطبخ: سقف بسيط مع بوكس فاصل. الحمّام: ٢٧٠'],['الفراغات شبه المفتوحة','المدخل والدرج والشرفة: حجر، معدن برونزي داكن، سقف خشبي وإنارة مدمجة']],
  views_t:'الفراغات الداخلية',views_s:'اضغط على حرف الفراغ أو اسحب الصورة.',view:'اللقطة',fl:{'1':'الطابق الأول','g':'الطابق الأرضي'},
  V:{A:['الصالة','من المطبخ باتجاه الأمام',['التلفاز على الجدار المشترك بلا فتحات','نافذة بعرض ٢٠٠ سم على بئر الدرج','باب المدخل ١٠٠ × ٢٨٠ وفتحة ١٩١ إلى الممر']],B:['الصالة والمطبخ','من المدخل باتجاه المطبخ',['المطبخ على الجدارين الخلفي والأيمن','يسارًا: فتحة الممر، باب الحمّام، نافذة المنور','جدار التلفاز على اليمين']],C:['الممر','١٠٢ × ٦٨٥ سم',['جداران مغلقان بكرانيش متطابقة','نهاية مغلقة؛ انعطاف ١٩١ نحو الصالة','إضاءة مخفية على جانبي السقف']],D:['الحمّام','١٣٠ × ١٩٨، سقف مستعار ٢٧٠',['سيراميك حتى السقف مع جدار حجري مميز','نافذة ٥٠ × ٦٠ بارتفاع جلسة ١٩٥','مرحاض معلق ومغسلة من خشب الجوز']],E:['الشرفة / ما قبل المدخل','شبه مفتوحة، ٢٦٤ × ٢٢١',['بابان: الممر ٩٠ × ٢٨٠ والصالة ١٠٠ × ٢٨٠','درابزين زجاجي ١١٠ باتجاه الشارع','جدار حجري، إنارة خارجية، نباتات']],F:['الدرج وقضبان الواجهة','فراغ المدخل شبه المفتوح',['قضبان برونزية بلا زجاج من ٢٤٠ حتى السطح','درج رخامي بدرابزين أنبوبي','حمّام تحت الدرج']],G:['المدخل','بابان متجاوران',['باب الممر وباب الصالة، خشب الجوز','نافذة ١٢٠ على الصالة','جدار حجري، حمّام تحت الدرج']]},
  facade_t:'الواجهة الرئيسية',facade_s:'جميع الفتحات والأبعاد من المخطط؛ بدّل بين المسقط والمنظور.',elev:'مسقط الواجهة',persp:'منظور',
  facade:['إطار رخامي للشرفات حتى أعلى غرفة الدرج مع شق إضاءة غائر','قضبان برونزية أمام الدرج بلا زجاج من ٢٤٠ حتى السطح','اللوح العلوي: شرائح رخام ١٥ سم بارزة وغائرة بالتناوب','إطار بارز للطابق الأرضي، رخام أفقي بفواصل ١ سم، بوابة خشبية ٢٨٠','غرفة الدرج ٢٧٠ والستارة ١٥٠'],facade_n:'بروز الإطارات وسماكة الرخام قيد التأكيد.',
  model_t:'النموذج ثلاثي الأبعاد',model_s:'دوّر، كبّر، أظهر وأخفِ الطوابق؛ وضع «كتلة + ظلال» لفهم الكتلة بشكل أفضل.',load3d:'عرض النموذج ثلاثي الأبعاد',full:'ملء الشاشة',
- set:'الإعدادات',lang:'اللغة',theme:'لون الصفحة',dark:'داكن',light:'فاتح',size:'حجم النص',close:'إغلاق',zoomhint:'اضغط مرتين للتكبير',foot:'تصميم: ArchTverse · الأبعاد من الرفع الميداني؛ الأبعاد الداخلية هي المرجع.'},
+ set:'الإعدادات',lang:'اللغة',theme:'لون الصفحة',dark:'داكن',light:'فاتح',size:'حجم النص',close:'إغلاق',zoomhint:'اضغط مرتين للتكبير',fitHint:'اضغط على الصورة لعرضها كاملة',foot:'تصميم: ArchTverse · الأبعاد من الرفع الميداني؛ الأبعاد الداخلية هي المرجع.'},
 en:{dir:'ltr',name:'English',brand:'ArchTverse · Karbala',title:'House 5.70 × 12.84',sub:'Plans, interiors and facade — ground floor + two typical floors',start:'Start',see3d:'3D model',
  nav:{facts:'Overview',plans:'Plans',design:'Design',views:'Interiors',facade:'Facade',model:'3D'},
  facts_t:'Project at a glance',facts:[['5.70 × 12.84','Plot, outside to outside (m)'],['3 floors','Ground + typical first and second'],['300 + 20','Floor to ceiling + slab (cm)'],['21 cm','Wall thickness (measured 20–22)'],['1 facade','Front only; left side has no neighbour'],['17 steps','Marble U-stair to the roof, with stair-head']],
- plans_t:'Plans',plans_s:'Pick a floor; tap the plan to zoom.',pg:'Ground floor',p1:'First & second floor (typical)',
+ plans_t:'Plans',plans_s:'Pick a floor and tap the view points.',pg:'Ground floor',p1:'First & second floor (typical)',
  pgL:['Semi-open entrance: wooden gate and two side-by-side doors (corridor, living)','Marble stair along the facade with bronze bars up to the roof','WC under the stair','102 cm corridor turning into the living room at its end','Kitchen, WC 130 × 198 and light well 130 × 94 at the back'],
  p1L:['Balcony / pre-entry 264 × 221, 110 glass railing','2 m living-room window onto the stairwell','Living room with the TV on the party wall','L-shaped kitchen, ceramic to the ceiling','Doors 280 high; interior windows from 90 to the ceiling'],
- legend:'Orange letters = camera positions; tap them in Interiors.',viewsOn:'Spaces on this floor:',
+ legend:'Blinking points mark each view and the cone shows where it looks; tap a point to step into that view.',viewsOn:'Spaces on this floor:',
  design_t:'Design language: warm neoclassical',design:[['Interiors','Warm white and greige walls, slim mouldings on feature walls only, 60 × 60 marble-look porcelain floors'],['Ceilings','Living: tray ceiling with cornice and hidden light. Kitchen: simple ceiling with a bulkhead. WC: 270'],['Semi-open spaces','Entrance, stair and balcony: stone, dark-bronze metal, wood soffits with recessed lights']],
  views_t:'Interiors',views_s:'Tap a letter or swipe the image.',view:'View',fl:{'1':'First floor','g':'Ground floor'},
  V:{A:['Living room','From the kitchen toward the front',['TV on the party wall, no openings','200 cm window onto the stairwell','Entrance door 100 × 280, 191 opening to the corridor']],B:['Living & kitchen','From the entrance toward the kitchen',['Kitchen on the back and right walls','Left: corridor opening, WC door, light-well window','TV wall on the right']],C:['Corridor','102 × 685 cm',['Two closed walls with matching mouldings','Closed end; 191 turn into the living room','Hidden cove light along both ceiling edges']],D:['WC','130 × 198, false ceiling 270',['Ceramic to the ceiling with a stone accent wall','50 × 60 window, sill 195, onto the light well','Wall-hung WC and walnut vanity']],E:['Balcony / pre-entry','Semi-open, 264 × 221',['Two doors: corridor 90 × 280, living 100 × 280','110 cm glass railing to the street','Stone wall, outdoor lantern, planting']],F:['Stair & facade bars','Semi-open entrance space',['Bronze bars, no glass, from 240 up to the roof','Marble stair with a tubular handrail','WC under the stair']],G:['Entrance','Two side-by-side doors',['Corridor and living doors in walnut','120 window to the living room','Stone walls, WC under the stair']]},
  facade_t:'Main facade',facade_s:'All openings and dimensions from the plan; switch between elevation and 3/4 view.',elev:'Elevation',persp:'3/4 view',
  facade:['Marble balcony frame up to the stair-head, with a recessed LED groove','Bronze bars in front of the stair, no glass, from 240 to the roof','Upper panel: 15 cm marble strips, alternately set in and out','Projecting ground-floor frame, horizontal marble with 1 cm joints, 280 wooden gate','Stair-head 270, parapet 150'],facade_n:'Frame projection and stone thickness to be confirmed.',
  model_t:'3D model',model_s:'Orbit, zoom, switch floors on and off; use “Volume + shadow” to read the massing.',load3d:'Show the 3D model',full:'Full screen',
- set:'Settings',lang:'Language',theme:'Theme',dark:'Dark',light:'Light',size:'Text size',close:'Close',zoomhint:'Double-tap to zoom',foot:'Design: ArchTverse · Dimensions from the site survey; internal dimensions govern.'}};
+ set:'Settings',lang:'Language',theme:'Theme',dark:'Dark',light:'Light',size:'Text size',close:'Close',zoomhint:'Double-tap to zoom',fitHint:'Tap the image to see it whole',foot:'Design: ArchTverse · Dimensions from the site survey; internal dimensions govern.'}};
 
 const store={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
 const Q=new URLSearchParams(location.search);
@@ -188,7 +243,7 @@ function render(){
     <div class="grid facts">${t.facts.map(([a,b])=>`<div class="card fact"><b>${a}</b><span>${b}</span></div>`).join('')}</div></div></section>
   <section id="plans"><div class="wrap"><h2>${t.plans_t}</h2><p class="sub">${t.plans_s}</p>
     <div class="tabs"><button class="chip ${plan==='g'?'on':''}" data-plan="g">${t.pg}</button><button class="chip ${plan==='1'?'on':''}" data-plan="1">${t.p1}</button></div>
-    <div class="grid two"><div class="pic" data-zoom="${IMG}pres_plan_${plan}.jpg" style="max-height:78svh"><img src="${IMG}pres_plan_${plan}.jpg" width="500" height="1038" alt="" style="max-height:78svh;width:auto;margin:auto"><span class="zoom">⤢</span></div>
+    <div class="grid two">${planSVG(plan)}
       <div><ul class="b">${(plan==='g'?t.pgL:t.p1L).map(x=>`<li>${x}</li>`).join('')}</ul>
       <p class="sub" style="margin:14px 0 8px">${t.legend}</p><div class="tabs">${t.viewsOn} ${planViews.map(k=>`<button class="chip" data-goview="${k}">${k} · ${t.V[k][0]}</button>`).join('')}</div></div></div></div></section>
   <section id="design"><div class="wrap"><h2>${t.design_t}</h2><p class="sub"></p>
@@ -205,7 +260,7 @@ function render(){
   <section id="model"><div class="wrap"><h2>${t.model_t}</h2><p class="sub">${t.model_s}</p>
     <div class="frame3d" id="f3d" style="background-image:url(${IMG}model3d.jpg)"><div class="start"><button class="btn" id="go3d">${t.load3d}</button></div></div>
     <div class="cta" style="margin-top:12px"><a class="btn ghost" href="model3d.html?lang=${L}">${t.full} ⤢</a></div></div></section>
-  <footer><div class="wrap">${t.foot} · v3</div></footer>`;
+  <footer><div class="wrap">${t.foot} · v5</div></footer>`;
   $('#sheet').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><b>${t.set}</b><button class="ib" data-close>${t.close}</button></div>
     <div class="srow"><span>${t.lang}</span><div class="seg">${Object.keys(TX).map(k=>`<button data-setlang="${k}" class="${k===L?'on':''}">${TX[k].name}</button>`).join('')}</div></div>
     <div class="srow"><span>${t.theme}</span><div class="seg"><button data-theme="dark" class="${theme==='dark'?'on':''}">${t.dark}</button><button data-theme="light" class="${theme==='light'?'on':''}">${t.light}</button></div></div>
@@ -232,6 +287,20 @@ document.addEventListener('click',e=>{
   if(d.goview){ view=d.goview; render(); $('#views').scrollIntoView(); return; }
   render(); scrollTo(0,y); if(d.theme||d.fs){ $('#sheet').classList.add('open'); $('#shade').classList.add('open'); }
 });
+let shotK=null;
+function shotFill(k){ const t=TX[L], V=t.V[k]; shotK=k; const sh=$('#shot');
+  sh.querySelector('img').src=IMG+R[k]; sh.querySelector('img').alt=V[0];
+  sh.querySelector('.cap').innerHTML=`<span>${t.view} ${k} · ${t.fl[FL[k]]}</span><br><b>${V[0]}</b> <span>— ${V[1]}</span>`;
+  sh.querySelector('.hint2').textContent=t.fitHint; sh.querySelector('.p').textContent=t.dir==='rtl'?'›':'‹'; sh.querySelector('.n').textContent=t.dir==='rtl'?'‹':'›'; }
+function openShot(k,x,y){ const sh=$('#shot'); sh.style.setProperty('--x',x+'px'); sh.style.setProperty('--y',y+'px'); shotFill(k);
+  sh.classList.add('open'); document.body.style.overflow='hidden'; void sh.offsetWidth; setTimeout(()=>sh.classList.add('in'),20); }
+function closeShot(){ const sh=$('#shot'); sh.classList.remove('in','fit'); setTimeout(()=>{ sh.classList.remove('open'); document.body.style.overflow=''; },700); }
+function stepShot(d){ const ks=Object.keys(R); const k=ks[(ks.indexOf(shotK)+d+ks.length)%ks.length]; const im=$('#shot img'); im.style.opacity=0; setTimeout(()=>{ shotFill(k); im.onload=()=>{im.style.opacity=1}; },250); }
+document.addEventListener('click',e=>{ const c=e.target.closest('.cam'); if(c){ const r=c.querySelector('.dot').getBoundingClientRect(); openShot(c.dataset.cam,r.left+r.width/2,r.top+r.height/2); return; }
+  if(e.target.closest('[data-shotclose]')) return closeShot(); if(e.target.matches('#shot img')) return $('#shot').classList.toggle('fit'); const st=e.target.closest('[data-shotstep]'); if(st) stepShot(+st.dataset.shotstep); },true);
+document.addEventListener('keydown',e=>{ if(!$('#shot').classList.contains('open')) return; if(e.key==='Escape') closeShot(); if(e.key==='ArrowRight') stepShot(TX[L].dir==='rtl'?-1:1); if(e.key==='ArrowLeft') stepShot(TX[L].dir==='rtl'?1:-1); if(e.key==='Enter'&&document.activeElement.classList.contains('cam')) document.activeElement.dispatchEvent(new MouseEvent('click',{bubbles:true})); });
+let shx=null; $('#shot').addEventListener('touchstart',e=>shx=e.touches[0].clientX,{passive:true});
+$('#shot').addEventListener('touchend',e=>{ if(shx===null) return; const dx=e.changedTouches[0].clientX-shx; shx=null; if(Math.abs(dx)>45) stepShot((dx<0)!==(TX[L].dir==='rtl')?1:-1); });
 $('#lb img').addEventListener('dblclick',()=>$('#lb').classList.toggle('z'));
 // swipe on the interior image
 let sx=null; document.addEventListener('touchstart',e=>{ if(e.target.closest('#vpic')) sx=e.touches[0].clientX; },{passive:true});
