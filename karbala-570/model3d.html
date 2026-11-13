@@ -96,7 +96,7 @@ const CLAY={winframe:0x4a3f35,gatemetal:0x1a1a1a,wall:0xf0ede8,slab:0xe6e2db,flo
 const kindOf=n=>n.split('_').slice(1).join('_');
 const edgeMat=new THREE.LineBasicMaterial({color:0x1f1b17,transparent:true,opacity:.55});
 
-new GLTFLoader().load('model/house.glb',g=>{
+new GLTFLoader().load((Q.get('m')&&/^model\/[\w.-]+\.glb$/.test(Q.get('m')))?Q.get('m'):'model/house.glb',g=>{
   const root=g.scene; scene.add(root);
   root.traverse(o=>{ if(!o.isMesh) return;
     const name=(o.name||o.parent?.name||''); const grp=name.split('_')[0]; const kind=kindOf(name);
